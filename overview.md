@@ -1,11 +1,12 @@
-ViyaDB
-=======
+Overview
+========
 
-In-memory analytical data store.
+ViyaDB is in-memory analytical data store.
 
-## Use case
+## Use cases
 
-ViyaDB aims to provide fast analytical queries on non-timeseries or semi-organized data.
+ * Customer-facing applications that serve analytical queries.
+ * Ingested data is not organized, thus random updates are common.
 
 ## Assumptions
 

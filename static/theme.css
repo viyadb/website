@@ -147,7 +147,7 @@ textarea,
 input {
   font-family: Helvetica Neue, Open Sans, sans-serif;
   line-height: 1.6;
-  font-size: 13px;
+  font-size: 16px;
   color: #505050;
 }
 @media (max-width: 480px) {
@@ -160,7 +160,7 @@ input {
 }
 a {
   color: #1ACC92;
-  font-size:13px;
+  font-size:16px;
   text-decoration: none;
 }
 a:hover {
@@ -667,7 +667,7 @@ body.no-literate .content pre > code:hover::-webkit-scrollbar-thumb {
   text-rendering: optimizeLegibility;
   font-weight: bold;
   font-family: Roboto, sans-serif;
-  font-size: 13px;
+  font-size: 16px;
 }
 .header h1,
 .header h1 a{
@@ -718,7 +718,7 @@ body.no-literate .content pre > code:hover::-webkit-scrollbar-thumb {
     line-height: 47px;
     margin-bottom: 0px;
     float: left;
-    font-family: "Avenir Next", "Myriad Pro", "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+    font-family: Avenir Next, Myriad Pro, Helvetica Neue, Helvetica, "Segoe UI", Arial, sans-serif;
     font-weight: 400;
     letter-spacing: -1px;
     display: block;
