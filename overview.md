@@ -5,53 +5,21 @@ ViyaDB is in-memory analytical data store.
 
 ## Use cases
 
- * Customer-facing applications that serve analytical queries.
- * Ingested data is not organized, thus random updates are common.
+ * Customer-facing applications, which serve analytical queries.
+ * Incoming events are not organized by any column, thus random updates are very much common.
 
-## Assumptions
+## Data Model
 
-This data store uses several assumptions about the data and the way the data is stored to make optimizations possible.
+### Event Structure
 
- * Events are represented by dimensions and metrics. Dimensions are string values (country, user agent, etc.), while metrics are either of long or double types.
- * Data ingestion operation is an UPSERT where metrics are aggregated based on a given set of dimensions.
- * New rows values are coming in the same order as table definition: first dimensions, then metrics.
- * Dimension values cardinality can and should be limited. For example, limiting cardinality of country names to 200 will allow using single byte encoding.
- * Dimension values cardinality can also be limited per subset of other dimensions, which is useful from memory space saving perspective.
+Every event consists of two sets:
 
-## Building from source
+ * Dimensions
+ * Metrics
+ 
+Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc.
+Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
 
-If your development machine is not Linux, unfortunately, refer to [this](devenv) document for instructions.
+### Cardinality Protection
 
-### Prerequisites
-
-You must have the following prerequisites installed:
-
- * CMake >= 3.2
- * Boost >= 1.64.0
- * g++ >= 7.1
-
-Additional third party dependencies are included into the project as Git submodules.
-
-### Building
-
-To fetch third party dependencies for the first time, run:
-
-    git submodule update --init --recursive
-
-To update third party dependencies when needed, run:
-
-    git submodule update --recursive --remote
-
-To build the project, run:
-
-    mkdir build/
-    cd build/
-    cmake ..
-    make -j8
-
-### Testing
-
-Unit tests are built as part of the main build process. To invoke all unit tests, run:
-
-    GLOG_logtostderr=1 ./test/unit_tests
-
+Cardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as "Other"), but also makes possible doing optimizations that improve database performance and save memory.
