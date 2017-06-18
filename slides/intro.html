@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ViyaDB | Intro</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .subtitle { color: #ccc; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+![](viyadb-logo.png)
+
+.subtitle[Introduction to yet another database]
+
+---
+
+# What is it?
+
+In-memory columnar analytical data store, featuring:
+
+- Random access update pattern
+- Built-in cardinality protection
+- Real-time query compilation to machine code
+- Dynamic period based rollup
+- REST API interface with intuitive JSON-based language
+
+---
+
+# Data Model
+
+Every database entry consists of two sets:
+
+- Dimensions
+- Metrics
+
+---
+
+# Dimension Types
+
+- String
+- Time
+- Microtime
+- Integral number
+
+---
+
+# Metric Types
+
+- Value
+- Count
+- Bitset
+
+---
+
+# Value Metric
+
+These are metrics defined by a type and an aggregation function.
+
+Supported types:
+
+ + int
+ + uint
+ + long
+ + ulong
+ + double
+
+Supported functions:
+
+ + sum
+ + max
+ + min
+
+---
+
+# Count Metric
+
+Just for counting rows...
+
+---
+
+# Bitset Metric
+
+Memory-optimized set for 32-bit or 64-bit numbers, used for calculating (not estimating) element cardinality.
+
+---
+
+# Example
+
+This is a definition of table that holds HTTP access log entries, and counts the number of such entries:
+
+```json
+{
+  "name": "access_log",
+  "dimensions": [
+    {"name": "ip"},
+    {"name": "time", "type": "time"},
+    {"name": "method", "cardinality": 5},
+    {"name": "path"},
+    {"name": "status", "type": "numeric", "max": 600}
+  ],
+  "metrics": [
+    {"name": "count", "type": "count"}
+  ]
+}
+```
+
+---
+
+# Query Types
+
+- Aggregate
+- Search
+
+---
+
+# Aggregate Query
+
+- Filter by given predicates
+- Select specified columns
+- Aggregate results
+- Sort by multiple columns (optionally)
+- Limit results number (optionally)
+
+---
+
+# Search Query
+
+Search for dimension values, given a set of predicates.
+
+Useful when implementing query UI...
+
+---
+
+# Example
+
+This query returns number of requests groupped by URI path and HTTP status:
+
+```json
+{
+  "type": "aggregate",
+  "table": "access_log",
+  "dimensions": ["path", "status"],
+  "metrics": ["count"],
+  "filter": {"op": "and", "filters": [
+    {"op": "ge", "column": "time", "value": "2017-01-01"},
+    {"op": "lt", "column": "time", "value": "2017-02-01"}
+  ]}
+}
+```
+
+---
+
+# Caveats
+
+- Dimension definition is global across database instance
+- Supported system: Linux x86_64 with modern GCC
+- No clustering available
+
+---
+
+# Future Development
+
+- Adaptive clustering
+- Query compilation speed up
+
+---
+
+class: center, middle
+# Demo
+
+
+    </textarea>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remark/0.14.0/remark.min.js"></script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
