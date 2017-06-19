@@ -15,6 +15,18 @@
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .subtitle { color: #ccc; }
+      .left-column {
+        width: 50%;
+        float: left;
+      }
+      .right-column {
+        width: 50%;
+        float: right;
+      }
+      .footnote {
+        position: absolute;
+        bottom: 3em;
+      }
     </style>
   </head>
   <body>
@@ -22,9 +34,9 @@
 
 class: center, middle
 
-![](viyadb-logo.png)
+![](logo.png)
 
-.subtitle[Introduction to yet another database]
+.subtitle[Anatomy of yet another database]
 
 ---
 
@@ -161,6 +173,18 @@ This query returns number of requests groupped by URI path and HTTP status:
   ]}
 }
 ```
+
+---
+
+# Concurrency
+
+.left-column[![](perf01.png)]
+.right-column[![](perf02.png)]
+
+.footnote[
+- Spreading to multiple CPU plays insignificant role
+- There's little improvement when using more than 4 threads
+]
 
 ---
 
