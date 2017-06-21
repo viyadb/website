@@ -3,25 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>ViyaDB | In-Memory Analytical Database</title>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js"></script>
-  <script src="https://cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js"></script>
-
   <link rel="icon" type="image/png" href="static/favicon.png" />
-  <link  href="static/theme.css" rel="stylesheet">
-  <script src="static/theme.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="static/theme.css" rel="stylesheet">
 
-  <script>
-    Flatdoc.run({
-      fetcher: Flatdoc.file("overview.md")
-    });
-  </script>
-
-  <!-- Meta -->
   <meta content="website" property="og:type">
 </head>
 
@@ -31,7 +20,8 @@
       <h1><a class="site-title" href="//viyadb.com"><img src="static/logo.png"></a></h1>
       <ul>
         <li><a href="/">Overview</a></li>
-        <li><a href="/samples.html">Samples</a></li>
+        <li><a href="#usage" onclick="reload();">Usage</a></li>
+        <li><a href="#samples" onclick="reload();">Samples</a></li>
       </ul>
     </div>
   </div>
@@ -40,11 +30,33 @@
     <div class="menubar">
       <div class="menu section" role="flatdoc-menu"></div>
       <div class="bottom section">
+        <p class="social-buttons">
+          <a href="//twitter.com/viyadb"><i class="fa fa-twitter-square fa-2x"></i></a>
+        </p>
         <p> ViyaDB © 2017 </p>
       </div>
     </div>
     <div role="flatdoc-content" class="content"></div>
   </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="//cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/legacy.js"></script>
+  <script src="//cdn.rawgit.com/rstacruz/flatdoc/v0.9.0/flatdoc.js"></script>
+  <script src="static/theme.js"></script>
+
+  <script type="text/javascript">
+    function reload() {
+      window.location.reload(true);
+    }
+    var pages = {
+      "#usage": "usage.md",
+      "#samples": "samples.md"
+    };
+    var page = pages[(window.location.hash || "").split("-")[0]] || "overview.md";
+    Flatdoc.run({
+      fetcher: Flatdoc.file(page)
+    });
+  </script>
 
 </body>
 </html>

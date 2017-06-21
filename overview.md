@@ -1,12 +1,18 @@
 Overview
 ========
 
-ViyaDB is in-memory analytical data store.
+ViyaDB is in-memory columnar analytical data store, featuring:
+
+- Random access update pattern
+- Built-in cardinality protection
+- Real-time query compilation to machine code
+- Dynamic period based rollup
+- REST API interface with intuitive JSON-based language
 
 ## Use cases
 
- * Customer-facing applications, which serve analytical queries.
- * Incoming events are not organized by any column, thus random updates are very much common.
+ * Customer-facing applications that serve analytical queries (aggregations).
+ * Incoming events are not organized by any column, thus random updates are very common.
 
 ## Data Model
 
@@ -22,6 +28,8 @@ Every event consists of two sets:
 Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc.
 
 Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
+
+For more information on supported data types, please refer to Data Ingestion section on <a href="#usage" onclick="reload();">usage</a> page.
 
 ### Column Names
 

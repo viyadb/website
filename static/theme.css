@@ -788,14 +788,14 @@ a.big.button:hover:visited {
 }
 @media (min-width: 769px) {
   .content-root {
-    padding-left: 230px;
+    padding-left: 300px;
   }
   .menubar {
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 230px;
+    width: 300px;
     border-right: solid 1px #dfe2e7;
   }
   .menubar.fixed {
@@ -1075,4 +1075,13 @@ img.zoom-img {
     margin-top: 40px;
     font-size: 0.9em;
   }
+}
+
+.social-buttons {
+  padding: 10px 0;
+}
+
+.social-buttons a {
+  color:inherit;
+  text-decoration: none;
 }
