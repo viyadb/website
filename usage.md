@@ -59,6 +59,7 @@ Description format is as follows:
 {
   "name": "<dimension name>",
   "type": "string",
+  "length": ...,
   "cardinality": ...,
   "cardinality_guard": {
     "dimensions": ["<other dimension>", ...],
@@ -71,6 +72,7 @@ Parameters:
 
  * name - Column name
  * type - Must be `string` (or can be omitted, since it's default)
+ * length - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).
  * cardinality - Number of distinct values this column holds (optional, but it's recommended to set)
 
 `cardinality_guard` allows defining a rule of how many distinct values is it possible to store per set

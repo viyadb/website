@@ -102,7 +102,7 @@ To generate 10M user activity events, run the following:
 
     ~$ wget https://raw.githubusercontent.com/viyadb/samples/master/activity/generate.py
     ~$ chmod +x ./generate.py
-    ~$ ./generate.py -n 10000000 > data.tsv
+    ~$ ./generate.py -d -n 10000000 > data.tsv
 
 This might take several minutes.
 
