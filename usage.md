@@ -106,7 +106,9 @@ This dimension allows to store UTC time. The difference between the two is that 
 {
   "name": "<dimension name>",
   "type": "time|microtime",
-  "format": ...
+  "format": ...,
+  "granularity": "<time unit>",
+  "rollup_rules": [ ... ]
 }
 ```
 
@@ -115,8 +117,49 @@ Parameters:
  * name - Column name
  * type - The type is set according to the required precision
  * format - Parse format used during data ingestion (check [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) documentation for available modifiers)
+ * granularity - When specified, this time granularity will be used for rolling up events during data ingestion
+ * rollup\_rules - Rules for dynamic period based rollup
+
+Supported time units:
+
+ * year
+ * month
+ * week
+ * day
+ * hour
+ * minute
+ * second
+
+Dynamic rollup rules are defined using the following format:
+
+```json
+{
+  "after": "<num> <time unit>"
+  "granularity": "<time unit>"
+}
+```
+
+For example, if the rules are:
+
+```json
+[{
+   "after": "3 month",
+   "granularity": "week"
+ }, {
+   "after": "1 year",
+   "granularity": "month"
+}]
+```
+
+Then events time column will change granularity dynamically to `weekly` after 3 months, to `monthly` after 1 year.
 
 ### Metrics
+
+There are three supported metric types:
+
+ * Value
+ * Count
+ * Bitset
 
 ## Data Ingestion
 
