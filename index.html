@@ -20,8 +20,8 @@
       <h1><a class="site-title" href="//viyadb.com"><img src="static/logo.png"></a></h1>
       <ul>
         <li><a href="/">Overview</a></li>
-        <li><a href="#usage" onclick="reload();">Usage</a></li>
-        <li><a href="#samples" onclick="reload();">Samples</a></li>
+        <li><a href="#usage-page" onclick="reload();">Usage</a></li>
+        <li><a href="#samples-page" onclick="reload();">Samples</a></li>
       </ul>
     </div>
   </div>
@@ -49,10 +49,10 @@
       window.location.reload(true);
     }
     var pages = {
-      "#usage": "usage.md",
-      "#samples": "samples.md"
+      "#usage-page": "usage.md",
+      "#samples-page": "samples.md"
     };
-    var page = pages[(window.location.hash || "").split("-")[0]] || "overview.md";
+    var page = pages[(window.location.hash || "").split("-")[0] + "-page"] || "overview.md";
     Flatdoc.run({
       fetcher: Flatdoc.file(page)
     });

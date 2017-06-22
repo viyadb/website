@@ -38,12 +38,85 @@ Table descriptors can be either a part of [store descriptor], or they can be cre
 Parameters:
 
  * name - Table name
- * dimensions - List of [dimension descriptors](#usage-defining-dimensions)
- * metrics - List of [metric descriptors](#usage-defining-metrics)
+ * dimensions - List of [dimension descriptors](#usage-creating-tables-dimensions)
+ * metrics - List of [metric descriptors](#usage-creating-tables-metrics)
 
-#### Defining Dimensions
+### Dimensions
 
-#### Defininig Metrics
+There are four types of dimensions:
+
+ * String
+ * Numeric
+ * Time
+ * Microtime
+
+#### String Dimension
+
+String dimension is a basic one, and it's used to describe things like: country, user agent, event name, etc.
+Description format is as follows:
+
+```json
+{
+  "name": "<dimension name>",
+  "type": "string",
+  "cardinality": ...,
+  "cardinality_guard": {
+    "dimensions": ["<other dimension>", ...],
+    "limit": ...
+  }
+}
+```
+
+Parameters:
+
+ * name - Column name
+ * type - Must be `string` (or can be omitted, since it's default)
+ * cardinality - Number of distinct values this column holds (optional, but it's recommended to set)
+
+`cardinality_guard` allows defining a rule of how many distinct values is it possible to store per set
+of other dimensions. For example, we can decide to store at most 200 distinct event names per event date, per country.
+All other events will be accounted still, but they will be marked as `__exceeded`. This is really important option,
+especially when incoming events are not controlled by yourself, and you don't want your database memory to explode because
+someone decided to sent some random values.
+
+#### Numeric Dimension
+
+This dimension allows to store whole positive numbers as a non-metric column. Description format is:
+
+```json
+{
+  "name": "<dimension name>",
+  "type": "numeric",
+  "max": ...
+}
+```
+
+Parameters:
+
+ * name - Column name
+ * type - Must be `numeric`.
+ * max - Maximum number this column can be (optional, but it's recommended to set)
+
+#### Time and Microtime Dimensions
+
+This dimension allows to store UTC time. The difference between the two is that `time` precision is up to seconds, while
+`microtime` precision is up to microseconds.
+
+```json
+{
+  "name": "<dimension name>",
+  "type": "time|microtime",
+  "format": ...
+}
+```
+
+Parameters:
+
+ * name - Column name
+ * type - The type is set according to the required precision
+ * format - Parse format used during data ingestion (check [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) documentation for available modifiers)
+
+### Metrics
 
 ## Data Ingestion
 
@@ -71,5 +144,4 @@ Important notes:
 
 ## Querying
 
-Query is described using 
 
