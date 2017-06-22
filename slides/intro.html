@@ -51,6 +51,46 @@ In-memory columnar analytical data store, featuring:
 - REST API interface with intuitive JSON-based language
 
 ---
+class: center, middle
+
+# More on each feature
+
+---
+
+# Random Writes
+
+- Update old event metrics
+- Most of analytical databases work with timeseries
+
+---
+
+# Cardinality Protection
+
+- Allow for up to 200 event names per app, event date and country
+- Protect against malicious events
+- Avoid memory explosion
+
+---
+
+# Query Compilation
+
+- Avoid branches in code.
+- Allow runtime optimizations for current architecture.
+
+---
+
+# Dynamic Rollup
+
+- Automatically reduce event granularity after period of time
+- Save space and query time
+- Historical metrics usually relevant when zooming out
+
+---
+class: center, middle
+
+# Internals
+
+---
 
 # Data Model
 
