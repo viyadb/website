@@ -11,7 +11,7 @@ ViyaDB is in-memory columnar analytical data store, featuring:
 
 ## Use cases
 
- * Customer-facing applications that serve analytical queries (aggregations).
+ * Customer-facing applications that serve ad-hoc analytical queries (aggregations).
  * Incoming events are not organized by any column, thus random updates are very common.
 
 ## Data Model
