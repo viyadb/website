@@ -3,6 +3,10 @@ Usage
 
 The following section describes how to configure and run a ViyaDB instance.
 
+## General
+
+Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See [Data Ingestion](#usage-data-ingestion) or [Querying](#usage-querying) sections below), but it can always be thought as a resource you're sending a request to is an action itself.
+
 ## Configuring DB Instance
 
 Store descriptor preresents a configuration file of a single ViyaDB instance. The format is the following:
@@ -59,11 +63,11 @@ Description format is as follows:
 {
   "name": "<dimension name>",
   "type": "string",
-  "length": ...,
-  "cardinality": ...,
+  "length": ... ,
+  "cardinality": ... ,
   "cardinality_guard": {
-    "dimensions": ["<other dimension>", ...],
-    "limit": ...
+    "dimensions": ["<other dimension>", ... ],
+    "limit":  ... 
   }
 }
 ```
@@ -89,7 +93,7 @@ This dimension allows to store whole positive numbers as a non-metric column. De
 {
   "name": "<dimension name>",
   "type": "numeric",
-  "max": ...
+  "max":  ... 
 }
 ```
 
@@ -108,7 +112,7 @@ This dimension allows to store UTC time. The difference between the two is that 
 {
   "name": "<dimension name>",
   "type": "time|microtime",
-  "format": ...,
+  "format":  ... ,
   "granularity": "<time unit>",
   "rollup_rules": [ ... ]
 }
@@ -178,7 +182,7 @@ Save load descriptor into `load.json` file:
 }
 ```
 
-Post this load descriptor to running ViyaDB instance:
+Post this load descriptor to a running ViyaDB instance:
 
     ~$ curl --data-binary @load.json http://<viyadb-host>:<viyadb-port>/load
 
@@ -188,5 +192,67 @@ Important notes:
  * Order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.
 
 ## Querying
+
+Supported query types are:
+
+ * Aggregate
+ * Search
+
+To query, a query request must be submitted using POST method:
+
+    ~$ curl --data-binary @query.json http://<viyadb-host>:<viyadb-port>/query
+
+Read further to learn more on different query types.
+    
+### Aggregate Query
+
+This kind of query aggregates records selected using filter predicate, and returns them to user (optionally, sorted and/or limited). It's important to know that aggregation is done in a memory, therefore all the result set must fit in.
+
+Query format:
+
+```json
+{
+  "type": "aggregate",
+  "table": "<table name>",
+  "select": [ ... ],
+  "filter":  ... ,
+  "sort": ... ,
+  "skip": 0,
+  "limit": 0
+}
+```
+
+Parameters:
+
+ * table - Table name
+ * select - List of parameters describing how to [select a column](#usage-column-selector)
+ * filter - [Filter](#usage-query-filters) description
+ * sort - Optional result [sorting configuration](#usage-sorting-results)
+ * skip - Optionally, skip this number of output records
+ * limit - Optionally, limit result set size to this number
+ 
+#### Column Selector
+
+Column is either dimension or metric. The format of selecting either of them is the following:
+
+```json
+{
+  "column": "<column name>",
+  "format": "<time format>",
+  "granularity": "<time granularity>"
+```
+
+Parameters:
+
+ * column - Dimension or metric name
+ 
+Time column has two additional optional parameters:
+
+ * format - Time output format (by default, UTC epoch timestamp will be sent)
+ * granularity - Rollup results by this time unit (see [time dimension](#usage-time-and-microtime-dimensions) configuration for supported time units)
+
+#### Query Filters
+
+Filter is one of mandatory parameters in query, which allows skipping irrelevant records.
 
 
