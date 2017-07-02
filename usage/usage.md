@@ -226,8 +226,8 @@ Parameters:
 
  * table - Table name
  * select - List of parameters describing how to [select a column](#usage-column-selector)
- * filter - [Filter](#usage-query-filters) description
- * sort - Optional result [sorting configuration](#usage-sorting-results)
+ * filter - Fitler description (see below)
+ * sort - Optional result sorting configuration (see below)
  * skip - Optionally, skip this number of output records
  * limit - Optionally, limit result set size to this number
  
@@ -253,6 +253,97 @@ Time column has two additional optional parameters:
 
 #### Query Filters
 
-Filter is one of mandatory parameters in query, which allows skipping irrelevant records.
+Filter is one of mandatory parameters in a query, which allows skipping irrelevant records. There are four different filter types.
+
+##### Value Operator Filter
+
+```json
+{
+  "op": "<filter operator>",
+  "column": "<column name>",
+  "value": "<filter value>"
+}
+```
+
+Parameters:
+
+ * op - Filter kind specified by operator
+ * column - Dimension or metric name
+ * value - Value that filter operates on
+ 
+Supported operators are:
+
+ * eq - Equals
+ * ne - Not equals
+ * lt - Less than
+ * le - Less or equals to
+ * gt - Greater than
+ * ge - Greater or equals to
+
+##### Negation Filter
+
+```json
+{
+  "op": "not",
+  "filter":  ... 
+}
+```
+
+Parameters:
+
+ * op - Must be `not`
+ * filter - Other filter descriptor
+
+##### Inclusion Filter
+
+```json
+{
+  "op": "in",
+  "column": "<column name>",
+  "values": ["value1", ... ]
+}
+```
+
+Parameters:
+
+ * op - Must be `in`
+ * column - Dimension or metric name
+ * values - List of values to filter on
+
+##### Composite Filter
+
+```json
+{
+  "op": "<composition operator>",
+  "filters": [ ... ]
+}
+```
+
+Parameters:
+
+ * op - One of composition operators: `or` or `and`
+ * filters - List of other filters to compose
 
 
+Below is an example of using different filter types:
+
+```json
+{
+  "type": "aggregate",
+  "table": "activity",
+  "select": [
+    {"column": "install_date"},
+    {"column": "ad_network"},
+    {"column": "install_country"},
+    {"column": "installs_count"},
+    {"column": "launches_count"},
+    {"column": "inapps_count"}
+  ],
+  "filter": {"op": "and", "filters": [
+    {"op": "eq", "column": "app_id", "value": "com.teslacoilsw.notifier"},
+    {"op": "ge", "column": "install_date", "value": "2015-01-01"},
+    {"op": "lt", "column": "install_date", "value": "2015-01-30"},
+    {"op": "in", "column": "install_country", "values": ["US", "IL", "RU"]}
+  ]}
+}
+```
