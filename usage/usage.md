@@ -216,7 +216,7 @@ Query format:
   "table": "<table name>",
   "select": [ ... ],
   "filter":  ... ,
-  "sort": ... ,
+  "sort": [ ... ] ,
   "skip": 0,
   "limit": 0
 }
@@ -240,6 +240,7 @@ Column is either dimension or metric. The format of selecting either of them is 
   "column": "<column name>",
   "format": "<time format>",
   "granularity": "<time granularity>"
+}
 ```
 
 Parameters:
@@ -321,9 +322,11 @@ Parameters:
 
 Parameters:
 
- * op - One of composition operators: `or` or `and`
+ * op - One of composition operators: `or`, `and`
  * filters - List of other filters to compose
 
+
+##### Filter Example
 
 Below is an example of using different filter types:
 
@@ -345,5 +348,35 @@ Below is an example of using different filter types:
     {"op": "lt", "column": "install_date", "value": "2015-01-30"},
     {"op": "in", "column": "install_country", "values": ["US", "IL", "RU"]}
   ]}
+}
+```
+
+#### Sorting Results
+
+You can ask to sort output results by set of columns, and specify sort order on each of them. Column sort configuration goes as follows:
+
+```json
+{
+   "column": "<column name>",
+   "ascending": true|false
+}
+```
+
+`ascending` parameter can be ommitted, in this case the sort order will be descending. 
+
+### Search Query
+
+This query type retrieves dimension values by a given set of filters. This feature can come in handy when implementing a field values type assist, when developing an analytics user interface filter.
+
+The basic format is the following:
+
+```json
+{
+  "type": "search",
+  "table": "<table name>",
+  "dimension": "<dimension name>",
+  "term": "<search term>",
+  "limit": 0,
+  "filter":  ...
 }
 ```
