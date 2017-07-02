@@ -27,9 +27,7 @@ Every event consists of two sets:
  * Dimensions
  * Metrics
  
-Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc.
-
-Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
+Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc. Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
 
 For more information on supported data types, please refer to Data Ingestion section on [usage](/usage) page.
 
@@ -42,3 +40,7 @@ Dimension names are global per database instance. That means if dimension is nam
 Cardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as "Other"), but also makes possible doing optimizations that improve database performance and save memory.
 
 Dimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.
+
+### Supported Systems
+
+The only supported system is Linux x86_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.
