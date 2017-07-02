@@ -9,6 +9,8 @@ ViyaDB is in-memory columnar analytical data store, featuring:
 - Dynamic period based rollup
 - REST API interface with intuitive JSON-based language
 
+Introduction slides are available [here](/slides/intro.html).
+
 ## Use cases
 
  * Customer-facing applications that serve ad-hoc analytical queries (aggregations).
@@ -29,7 +31,7 @@ Dimensions are event descriptors. Example of dimensions are: country, user agent
 
 Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
 
-For more information on supported data types, please refer to Data Ingestion section on <a href="#usage" onclick="reload();">usage</a> page.
+For more information on supported data types, please refer to Data Ingestion section on [usage](/usage) page.
 
 ### Column Names
 
