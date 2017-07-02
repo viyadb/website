@@ -41,6 +41,6 @@ Cardinality protection is built into ViyaDB, which basically means that you can 
 
 Dimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.
 
-### Supported Systems
+## Supported Systems
 
 The only supported system is Linux x86_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.
