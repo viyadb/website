@@ -225,7 +225,7 @@ Query format:
 Parameters:
 
  * table - Table name
- * select - List of parameters describing how to [select a column](#usage-column-selector)
+ * select - List of parameters describing how to select a column (see below)
  * filter - Fitler description (see below)
  * sort - Optional result sorting configuration (see below)
  * skip - Optionally, skip this number of output records
@@ -248,7 +248,7 @@ Parameters:
  
 Time column has two additional optional parameters:
 
- * format - Time output format (by default, UTC epoch timestamp will be sent)
+ * format - Time output format (check [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) documentation for available modifiers). By default, UTC epoch timestamp will be sent
  * granularity - Rollup results by this time unit (see [time dimension](#usage-time-and-microtime-dimensions) configuration for supported time units)
 
 #### Query Filters
