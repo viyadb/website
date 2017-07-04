@@ -29,7 +29,7 @@ Parameters:
 
 ## Creating Tables
 
-Table descriptors can be either a part of [store descriptor], or they can be created on-demand using REST API.
+Table descriptors can be either a part of [store descriptor](#usage-configuring-db-instance), or they can be created on-demand using REST API.
 
 ```json
 {
