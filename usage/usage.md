@@ -16,7 +16,12 @@ Store descriptor preresents a configuration file of a single ViyaDB instance. Th
   "query_threads": 1,
   "cpu": [ ... ],
   "port": 52341,
-  "tables": [ ... ]
+  "tables": [ ... ],
+  "statsd": {
+    "host":  ... ,
+    "port": 8125,
+    "prefix": "viyadb.%h."
+  }
 }
 ```
 
@@ -26,6 +31,7 @@ Parameters:
  * cpu - List of zero-based CPU indices that this process will use, defaults to all available CPUs.
  * port - REST service port number, defaults to 52341.
  * tables - List of [table descriptors](#usage-creating-tables).
+ * statsd - If specified, some metrics will be reported to the given Statsd host
 
 ## Creating Tables
 
