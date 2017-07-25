@@ -8,7 +8,7 @@ The following section contains several examples that cover most of the ViyaDB fe
 It's recommended to use Docker image of ViyaDB for running the samples.
 To launch Docker container with latest ViyaDB version, run:
 
-    ~$ docker run -p 52341:52341 -ti viyadb/viyadb:latest
+    ~$ docker run -p 5000:5000 -ti viyadb/viyadb:latest
 
 
 ## Mobile Attribution Tracking
@@ -94,7 +94,7 @@ Create `table.json` file containing:
 
 Create the table by running:
 
-    ~$ curl -d @table.json http://localhost:52341/tables 
+    ~$ curl -d @table.json http://localhost:5000/tables 
 
 ### Generating Sample Data
 
@@ -134,5 +134,5 @@ This helps understand what ad network was more effective in terms of payout by p
 
 Save the query in file `query.json`, and run:
 
-    ~$ curl -d @query.json http://localhost:52341/query
+    ~$ curl -d @query.json http://localhost:5000/query
 
