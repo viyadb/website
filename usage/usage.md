@@ -52,6 +52,10 @@ Parameters:
  * name - Table name
  * dimensions - List of [dimension descriptors](#usage-creating-tables-dimensions)
  * metrics - List of [metric descriptors](#usage-creating-tables-metrics)
+ 
+To create a table, issue the following command:
+
+    ~$ curl --data-binary @table.json http://<viyadb-host>:<viyadb-port>/tables
 
 ### Dimensions
 
