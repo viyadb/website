@@ -5,7 +5,7 @@ The following section describes how to configure and run a ViyaDB instance.
 
 ## General
 
-Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See [Data Ingestion](#usage-data-ingestion) or [Querying](#usage-querying) sections below), but it can always be thought as a resource you're sending a request to is an action itself.
+Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See [Data Ingestion](#data-ingestion) or [Querying](#querying) sections below), but it can always be thought as a resource you're sending a request to is an action itself.
 
 ## Configuring DB Instance
 
@@ -32,12 +32,12 @@ Parameters:
  * cpu\_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.
  * workers - Number of workers to start, defaults to the number of available CPUs.
  * port - REST service port number, defaults to 5000.
- * tables - List of [table descriptors](#usage-creating-tables).
+ * tables - List of [table descriptors](#creating-tables).
  * statsd - If specified, some metrics will be reported to the given Statsd host
 
 ## Creating Tables
 
-Table descriptors can be either a part of [store descriptor](#usage-configuring-db-instance), or they can be created on-demand using REST API.
+Table descriptors can be either a part of [store descriptor](#configuring-db-instance), or they can be created on-demand using REST API.
 
 ```json
 {
@@ -50,8 +50,8 @@ Table descriptors can be either a part of [store descriptor](#usage-configuring-
 Parameters:
 
  * name - Table name
- * dimensions - List of [dimension descriptors](#usage-creating-tables-dimensions)
- * metrics - List of [metric descriptors](#usage-creating-tables-metrics)
+ * dimensions - List of [dimension descriptors](#dimensions)
+ * metrics - List of [metric descriptors](#metrics)
 
 ### Dimensions
 
@@ -258,7 +258,7 @@ Parameters:
 Time column has two additional optional parameters:
 
  * format - Time output format (check [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) documentation for available modifiers). By default, UTC epoch timestamp will be sent
- * granularity - Rollup results by this time unit (see [time dimension](#usage-time-and-microtime-dimensions) configuration for supported time units)
+ * granularity - Rollup results by this time unit (see [time dimension](#time-and-microtime-dimensions) configuration for supported time units)
 
 #### Query Filters
 

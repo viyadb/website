@@ -1,0 +1,6 @@
+site_name: ViyaDB
+pages:
+  - Overview: index.md
+  - Usage: usage.md
+  - Samples: samples.md
+theme: readthedocs
