@@ -50,17 +50,12 @@ Table descriptors can be either a part of [store descriptor](#configuring-db-ins
 Parameters:
 
  * name - Table name
-<<<<<<< HEAD:docs/usage.md
  * dimensions - List of [dimension descriptors](#dimensions)
  * metrics - List of [metric descriptors](#metrics)
-=======
- * dimensions - List of [dimension descriptors](#usage-creating-tables-dimensions)
- * metrics - List of [metric descriptors](#usage-creating-tables-metrics)
  
 To create a table, issue the following command:
 
     ~$ curl --data-binary @table.json http://<viyadb-host>:<viyadb-port>/tables
->>>>>>> a8ab7374d4f9b6479720cf1a45ce4eed8540510a:usage/usage.md
 
 ### Dimensions
 
