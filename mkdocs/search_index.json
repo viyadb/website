@@ -1,0 +1,194 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Overview\n\n\nViyaDB is in-memory columnar analytical data store, featuring:\n\n\n\n\nRandom access update pattern\n\n\nBuilt-in cardinality protection\n\n\nReal-time query compilation to machine code\n\n\nDynamic period based rollup\n\n\nREST API interface with intuitive JSON-based language\n\n\n\n\nIntroduction slides are available \nhere\n.\n\n\nUse cases\n\n\n\n\nCustomer-facing applications that serve ad-hoc analytical queries (aggregations).\n\n\nIncoming events are not organized by any column, thus random updates are very common.\n\n\n\n\nData Model\n\n\nThis section explain some assumptions we made in ViyaDB that make different optimizations possible.\n\n\nEvent Structure\n\n\nEvery event consists of two sets:\n\n\n\n\nDimensions\n\n\nMetrics\n\n\n\n\nDimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc. Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.\n\n\nFor more information on supported data types, please refer to Data Ingestion section on \nusage\n page.\n\n\nColumn Names\n\n\nDimension names are global per database instance. That means if dimension is named 'country' in a two different tables it must have the same meaning (or, more specifically, must share the same set of values).\n\n\nCardinality Protection\n\n\nCardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as \"Other\"), but also makes possible doing optimizations that improve database performance and save memory.\n\n\nDimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.\n\n\nSupported Systems\n\n\nThe only supported system is Linux x86_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/#overview", 
+            "text": "ViyaDB is in-memory columnar analytical data store, featuring:   Random access update pattern  Built-in cardinality protection  Real-time query compilation to machine code  Dynamic period based rollup  REST API interface with intuitive JSON-based language   Introduction slides are available  here .", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/#use-cases", 
+            "text": "Customer-facing applications that serve ad-hoc analytical queries (aggregations).  Incoming events are not organized by any column, thus random updates are very common.", 
+            "title": "Use cases"
+        }, 
+        {
+            "location": "/#data-model", 
+            "text": "This section explain some assumptions we made in ViyaDB that make different optimizations possible.", 
+            "title": "Data Model"
+        }, 
+        {
+            "location": "/#event-structure", 
+            "text": "Every event consists of two sets:   Dimensions  Metrics   Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc. Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.  For more information on supported data types, please refer to Data Ingestion section on  usage  page.", 
+            "title": "Event Structure"
+        }, 
+        {
+            "location": "/#column-names", 
+            "text": "Dimension names are global per database instance. That means if dimension is named 'country' in a two different tables it must have the same meaning (or, more specifically, must share the same set of values).", 
+            "title": "Column Names"
+        }, 
+        {
+            "location": "/#cardinality-protection", 
+            "text": "Cardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as \"Other\"), but also makes possible doing optimizations that improve database performance and save memory.  Dimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.", 
+            "title": "Cardinality Protection"
+        }, 
+        {
+            "location": "/#supported-systems", 
+            "text": "The only supported system is Linux x86_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.", 
+            "title": "Supported Systems"
+        }, 
+        {
+            "location": "/usage/", 
+            "text": "Usage\n\n\nThe following section describes how to configure and run a ViyaDB instance.\n\n\nGeneral\n\n\nInteraction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See \nData Ingestion\n or \nQuerying\n sections below), but it can always be thought as a resource you're sending a request to is an action itself.\n\n\nConfiguring DB Instance\n\n\nStore descriptor preresents a configuration file of a single ViyaDB instance. The format is the following:\n\n\n{\n  \nquery_threads\n: 1,\n  \ncpu\n: [ ... ],\n  \nworkers\n: 1,\n  \nport\n: 5000,\n  \ntables\n: [ ... ],\n  \nstatsd\n: {\n    \nhost\n:  ... ,\n    \nport\n: 8125,\n    \nprefix\n: \nviyadb.%h.\n\n  }\n}\n\n\n\n\nParameters:\n\n\n\n\nquery_threads - Number of threads that will serve queries, defaults to 1.\n\n\ncpu_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.\n\n\nworkers - Number of workers to start, defaults to the number of available CPUs.\n\n\nport - REST service port number, defaults to 5000.\n\n\ntables - List of \ntable descriptors\n.\n\n\nstatsd - If specified, some metrics will be reported to the given Statsd host\n\n\n\n\nCreating Tables\n\n\nTable descriptors can be either a part of \nstore descriptor\n, or they can be created on-demand using REST API.\n\n\n{\n  \nname\n: \ntable name\n,\n  \ndimensions\n: [ ... ],\n  \nmetrics\n: [ ... ]\n}\n\n\n\n\nParameters:\n\n\n\n\nname - Table name\n\n\ndimensions - List of \ndimension descriptors\n\n\nmetrics - List of \nmetric descriptors\n\n\n\n\nDimensions\n\n\nThere are four types of dimensions:\n\n\n\n\nString\n\n\nNumeric\n\n\nTime\n\n\nMicrotime\n\n\n\n\nString Dimension\n\n\nString dimension is a basic one, and it's used to describe things like: country, user agent, event name, etc.\nDescription format is as follows:\n\n\n{\n  \nname\n: \ndimension name\n,\n  \ntype\n: \nstring\n,\n  \nlength\n: ... ,\n  \ncardinality\n: ... ,\n  \ncardinality_guard\n: {\n    \ndimensions\n: [\nother dimension\n, ... ],\n    \nlimit\n:  ... \n  }\n}\n\n\n\n\nParameters:\n\n\n\n\nname - Column name\n\n\ntype - Must be \nstring\n (or can be omitted, since it's default)\n\n\nlength - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).\n\n\ncardinality - Number of distinct values this column holds (optional, but it's recommended to set)\n\n\n\n\ncardinality_guard\n allows defining a rule of how many distinct values is it possible to store per set\nof other dimensions. For example, we can decide to store at most 200 distinct event names per event date, per country.\nAll other events will be accounted still, but they will be marked as \n__exceeded\n. This is really important option,\nespecially when incoming events are not controlled by yourself, and you don't want your database memory to explode because\nsomeone decided to sent some random values.\n\n\nNumeric Dimension\n\n\nThis dimension allows to store whole positive numbers as a non-metric column. Description format is:\n\n\n{\n  \nname\n: \ndimension name\n,\n  \ntype\n: \nnumeric\n,\n  \nmax\n:  ... \n}\n\n\n\n\nParameters:\n\n\n\n\nname - Column name\n\n\ntype - Must be \nnumeric\n.\n\n\nmax - Maximum number this column can be (optional, but it's recommended to set)\n\n\n\n\nTime and Microtime Dimensions\n\n\nThis dimension allows to store UTC time. The difference between the two is that \ntime\n precision is up to seconds, while\n\nmicrotime\n precision is up to microseconds.\n\n\n{\n  \nname\n: \ndimension name\n,\n  \ntype\n: \ntime|microtime\n,\n  \nformat\n:  ... ,\n  \ngranularity\n: \ntime unit\n,\n  \nrollup_rules\n: [ ... ]\n}\n\n\n\n\nParameters:\n\n\n\n\nname - Column name\n\n\ntype - The type is set according to the required precision\n\n\nformat - Parse format used during data ingestion (check \nstrptime\n documentation for available modifiers)\n\n\ngranularity - When specified, this time granularity will be used for rolling up events during data ingestion\n\n\nrollup_rules - Rules for dynamic period based rollup\n\n\n\n\nSupported time units:\n\n\n\n\nyear\n\n\nmonth\n\n\nweek\n\n\nday\n\n\nhour\n\n\nminute\n\n\nsecond\n\n\n\n\nDynamic rollup rules are defined using the following format:\n\n\n{\n  \nafter\n: \nnum\n \ntime unit\n\n  \ngranularity\n: \ntime unit\n\n}\n\n\n\n\nFor example, if the rules are:\n\n\n[{\n   \nafter\n: \n3 month\n,\n   \ngranularity\n: \nweek\n\n }, {\n   \nafter\n: \n1 year\n,\n   \ngranularity\n: \nmonth\n\n}]\n\n\n\n\nThen events time column will change granularity dynamically to \nweekly\n after 3 months, to \nmonthly\n after 1 year.\n\n\nMetrics\n\n\nThere are three supported metric types:\n\n\n\n\nValue\n\n\nCount\n\n\nBitset\n\n\n\n\nData Ingestion\n\n\nLoading from TSV files\n\n\nSave load descriptor into \nload.json\n file:\n\n\n{\n  \ntable\n: \ntarget_table\n,\n  \nformat\n: \ntsv\n,\n  \ntype\n: \nfile\n,\n  \nfile\n: \n/path/to/data.tsv\n\n}\n\n\n\n\nPost this load descriptor to a running ViyaDB instance:\n\n\n~$ curl --data-binary @load.json http://\nviyadb-host\n:\nviyadb-port\n/load\n\n\n\nImportant notes:\n\n\n\n\nThe \ndata.tsv\n file must be accessible to the ViyaDB instance you're loading the data into.\n\n\nOrder of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.\n\n\n\n\nQuerying\n\n\nSupported query types are:\n\n\n\n\nAggregate\n\n\nSearch\n\n\n\n\nTo query, a query request must be submitted using POST method:\n\n\n~$ curl --data-binary @query.json http://\nviyadb-host\n:\nviyadb-port\n/query\n\n\n\nRead further to learn more on different query types.\n\n\nAggregate Query\n\n\nThis kind of query aggregates records selected using filter predicate, and returns them to user (optionally, sorted and/or limited). It's important to know that aggregation is done in a memory, therefore all the result set must fit in.\n\n\nQuery format:\n\n\n{\n  \ntype\n: \naggregate\n,\n  \ntable\n: \ntable name\n,\n  \nselect\n: [ ... ],\n  \nfilter\n:  ... ,\n  \nsort\n: [ ... ] ,\n  \nskip\n: 0,\n  \nlimit\n: 0\n}\n\n\n\n\nParameters:\n\n\n\n\ntable - Table name\n\n\nselect - List of parameters describing how to select a column (see below)\n\n\nfilter - Fitler description (see below)\n\n\nsort - Optional result sorting configuration (see below)\n\n\nskip - Optionally, skip this number of output records\n\n\nlimit - Optionally, limit result set size to this number\n\n\n\n\nColumn Selector\n\n\nColumn is either dimension or metric. The format of selecting either of them is the following:\n\n\n{\n  \ncolumn\n: \ncolumn name\n,\n  \nformat\n: \ntime format\n,\n  \ngranularity\n: \ntime granularity\n\n}\n\n\n\n\nParameters:\n\n\n\n\ncolumn - Dimension or metric name\n\n\n\n\nTime column has two additional optional parameters:\n\n\n\n\nformat - Time output format (check \nstrptime\n documentation for available modifiers). By default, UTC epoch timestamp will be sent\n\n\ngranularity - Rollup results by this time unit (see \ntime dimension\n configuration for supported time units)\n\n\n\n\nQuery Filters\n\n\nFilter is one of mandatory parameters in a query, which allows skipping irrelevant records. There are four different filter types.\n\n\nValue Operator Filter\n\n\n{\n  \nop\n: \nfilter operator\n,\n  \ncolumn\n: \ncolumn name\n,\n  \nvalue\n: \nfilter value\n\n}\n\n\n\n\nParameters:\n\n\n\n\nop - Filter kind specified by operator\n\n\ncolumn - Dimension or metric name\n\n\nvalue - Value that filter operates on\n\n\n\n\nSupported operators are:\n\n\n\n\neq - Equals\n\n\nne - Not equals\n\n\nlt - Less than\n\n\nle - Less or equals to\n\n\ngt - Greater than\n\n\nge - Greater or equals to\n\n\n\n\nNegation Filter\n\n\n{\n  \nop\n: \nnot\n,\n  \nfilter\n:  ... \n}\n\n\n\n\nParameters:\n\n\n\n\nop - Must be \nnot\n\n\nfilter - Other filter descriptor\n\n\n\n\nInclusion Filter\n\n\n{\n  \nop\n: \nin\n,\n  \ncolumn\n: \ncolumn name\n,\n  \nvalues\n: [\nvalue1\n, ... ]\n}\n\n\n\n\nParameters:\n\n\n\n\nop - Must be \nin\n\n\ncolumn - Dimension or metric name\n\n\nvalues - List of values to filter on\n\n\n\n\nComposite Filter\n\n\n{\n  \nop\n: \ncomposition operator\n,\n  \nfilters\n: [ ... ]\n}\n\n\n\n\nParameters:\n\n\n\n\nop - One of composition operators: \nor\n, \nand\n\n\nfilters - List of other filters to compose\n\n\n\n\nFilter Example\n\n\nBelow is an example of using different filter types:\n\n\n{\n  \ntype\n: \naggregate\n,\n  \ntable\n: \nactivity\n,\n  \nselect\n: [\n    {\ncolumn\n: \ninstall_date\n},\n    {\ncolumn\n: \nad_network\n},\n    {\ncolumn\n: \ninstall_country\n},\n    {\ncolumn\n: \ninstalls_count\n},\n    {\ncolumn\n: \nlaunches_count\n},\n    {\ncolumn\n: \ninapps_count\n}\n  ],\n  \nfilter\n: {\nop\n: \nand\n, \nfilters\n: [\n    {\nop\n: \neq\n, \ncolumn\n: \napp_id\n, \nvalue\n: \ncom.teslacoilsw.notifier\n},\n    {\nop\n: \nge\n, \ncolumn\n: \ninstall_date\n, \nvalue\n: \n2015-01-01\n},\n    {\nop\n: \nlt\n, \ncolumn\n: \ninstall_date\n, \nvalue\n: \n2015-01-30\n},\n    {\nop\n: \nin\n, \ncolumn\n: \ninstall_country\n, \nvalues\n: [\nUS\n, \nIL\n, \nRU\n]}\n  ]}\n}\n\n\n\n\nSorting Results\n\n\nYou can ask to sort output results by set of columns, and specify sort order on each of them. Column sort configuration goes as follows:\n\n\n{\n   \ncolumn\n: \ncolumn name\n,\n   \nascending\n: true|false\n}\n\n\n\n\nascending\n parameter can be ommitted, in this case the sort order will be descending. \n\n\nSearch Query\n\n\nThis query type retrieves dimension values by a given set of filters. This feature can come in handy when implementing a field values type assist, when developing an analytics user interface filter.\n\n\nThe basic format is the following:\n\n\n{\n  \ntype\n: \nsearch\n,\n  \ntable\n: \ntable name\n,\n  \ndimension\n: \ndimension name\n,\n  \nterm\n: \nsearch term\n,\n  \nlimit\n: 0,\n  \nfilter\n:  ...\n}", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#usage", 
+            "text": "The following section describes how to configure and run a ViyaDB instance.", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/usage/#general", 
+            "text": "Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See  Data Ingestion  or  Querying  sections below), but it can always be thought as a resource you're sending a request to is an action itself.", 
+            "title": "General"
+        }, 
+        {
+            "location": "/usage/#configuring-db-instance", 
+            "text": "Store descriptor preresents a configuration file of a single ViyaDB instance. The format is the following:  {\n   query_threads : 1,\n   cpu : [ ... ],\n   workers : 1,\n   port : 5000,\n   tables : [ ... ],\n   statsd : {\n     host :  ... ,\n     port : 8125,\n     prefix :  viyadb.%h. \n  }\n}  Parameters:   query_threads - Number of threads that will serve queries, defaults to 1.  cpu_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.  workers - Number of workers to start, defaults to the number of available CPUs.  port - REST service port number, defaults to 5000.  tables - List of  table descriptors .  statsd - If specified, some metrics will be reported to the given Statsd host", 
+            "title": "Configuring DB Instance"
+        }, 
+        {
+            "location": "/usage/#creating-tables", 
+            "text": "Table descriptors can be either a part of  store descriptor , or they can be created on-demand using REST API.  {\n   name :  table name ,\n   dimensions : [ ... ],\n   metrics : [ ... ]\n}  Parameters:   name - Table name  dimensions - List of  dimension descriptors  metrics - List of  metric descriptors", 
+            "title": "Creating Tables"
+        }, 
+        {
+            "location": "/usage/#dimensions", 
+            "text": "There are four types of dimensions:   String  Numeric  Time  Microtime", 
+            "title": "Dimensions"
+        }, 
+        {
+            "location": "/usage/#string-dimension", 
+            "text": "String dimension is a basic one, and it's used to describe things like: country, user agent, event name, etc.\nDescription format is as follows:  {\n   name :  dimension name ,\n   type :  string ,\n   length : ... ,\n   cardinality : ... ,\n   cardinality_guard : {\n     dimensions : [ other dimension , ... ],\n     limit :  ... \n  }\n}  Parameters:   name - Column name  type - Must be  string  (or can be omitted, since it's default)  length - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).  cardinality - Number of distinct values this column holds (optional, but it's recommended to set)   cardinality_guard  allows defining a rule of how many distinct values is it possible to store per set\nof other dimensions. For example, we can decide to store at most 200 distinct event names per event date, per country.\nAll other events will be accounted still, but they will be marked as  __exceeded . This is really important option,\nespecially when incoming events are not controlled by yourself, and you don't want your database memory to explode because\nsomeone decided to sent some random values.", 
+            "title": "String Dimension"
+        }, 
+        {
+            "location": "/usage/#numeric-dimension", 
+            "text": "This dimension allows to store whole positive numbers as a non-metric column. Description format is:  {\n   name :  dimension name ,\n   type :  numeric ,\n   max :  ... \n}  Parameters:   name - Column name  type - Must be  numeric .  max - Maximum number this column can be (optional, but it's recommended to set)", 
+            "title": "Numeric Dimension"
+        }, 
+        {
+            "location": "/usage/#time-and-microtime-dimensions", 
+            "text": "This dimension allows to store UTC time. The difference between the two is that  time  precision is up to seconds, while microtime  precision is up to microseconds.  {\n   name :  dimension name ,\n   type :  time|microtime ,\n   format :  ... ,\n   granularity :  time unit ,\n   rollup_rules : [ ... ]\n}  Parameters:   name - Column name  type - The type is set according to the required precision  format - Parse format used during data ingestion (check  strptime  documentation for available modifiers)  granularity - When specified, this time granularity will be used for rolling up events during data ingestion  rollup_rules - Rules for dynamic period based rollup   Supported time units:   year  month  week  day  hour  minute  second   Dynamic rollup rules are defined using the following format:  {\n   after :  num   time unit \n   granularity :  time unit \n}  For example, if the rules are:  [{\n    after :  3 month ,\n    granularity :  week \n }, {\n    after :  1 year ,\n    granularity :  month \n}]  Then events time column will change granularity dynamically to  weekly  after 3 months, to  monthly  after 1 year.", 
+            "title": "Time and Microtime Dimensions"
+        }, 
+        {
+            "location": "/usage/#metrics", 
+            "text": "There are three supported metric types:   Value  Count  Bitset", 
+            "title": "Metrics"
+        }, 
+        {
+            "location": "/usage/#data-ingestion", 
+            "text": "", 
+            "title": "Data Ingestion"
+        }, 
+        {
+            "location": "/usage/#loading-from-tsv-files", 
+            "text": "Save load descriptor into  load.json  file:  {\n   table :  target_table ,\n   format :  tsv ,\n   type :  file ,\n   file :  /path/to/data.tsv \n}  Post this load descriptor to a running ViyaDB instance:  ~$ curl --data-binary @load.json http:// viyadb-host : viyadb-port /load  Important notes:   The  data.tsv  file must be accessible to the ViyaDB instance you're loading the data into.  Order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.", 
+            "title": "Loading from TSV files"
+        }, 
+        {
+            "location": "/usage/#querying", 
+            "text": "Supported query types are:   Aggregate  Search   To query, a query request must be submitted using POST method:  ~$ curl --data-binary @query.json http:// viyadb-host : viyadb-port /query  Read further to learn more on different query types.", 
+            "title": "Querying"
+        }, 
+        {
+            "location": "/usage/#aggregate-query", 
+            "text": "This kind of query aggregates records selected using filter predicate, and returns them to user (optionally, sorted and/or limited). It's important to know that aggregation is done in a memory, therefore all the result set must fit in.  Query format:  {\n   type :  aggregate ,\n   table :  table name ,\n   select : [ ... ],\n   filter :  ... ,\n   sort : [ ... ] ,\n   skip : 0,\n   limit : 0\n}  Parameters:   table - Table name  select - List of parameters describing how to select a column (see below)  filter - Fitler description (see below)  sort - Optional result sorting configuration (see below)  skip - Optionally, skip this number of output records  limit - Optionally, limit result set size to this number", 
+            "title": "Aggregate Query"
+        }, 
+        {
+            "location": "/usage/#column-selector", 
+            "text": "Column is either dimension or metric. The format of selecting either of them is the following:  {\n   column :  column name ,\n   format :  time format ,\n   granularity :  time granularity \n}  Parameters:   column - Dimension or metric name   Time column has two additional optional parameters:   format - Time output format (check  strptime  documentation for available modifiers). By default, UTC epoch timestamp will be sent  granularity - Rollup results by this time unit (see  time dimension  configuration for supported time units)", 
+            "title": "Column Selector"
+        }, 
+        {
+            "location": "/usage/#query-filters", 
+            "text": "Filter is one of mandatory parameters in a query, which allows skipping irrelevant records. There are four different filter types.", 
+            "title": "Query Filters"
+        }, 
+        {
+            "location": "/usage/#value-operator-filter", 
+            "text": "{\n   op :  filter operator ,\n   column :  column name ,\n   value :  filter value \n}  Parameters:   op - Filter kind specified by operator  column - Dimension or metric name  value - Value that filter operates on   Supported operators are:   eq - Equals  ne - Not equals  lt - Less than  le - Less or equals to  gt - Greater than  ge - Greater or equals to", 
+            "title": "Value Operator Filter"
+        }, 
+        {
+            "location": "/usage/#negation-filter", 
+            "text": "{\n   op :  not ,\n   filter :  ... \n}  Parameters:   op - Must be  not  filter - Other filter descriptor", 
+            "title": "Negation Filter"
+        }, 
+        {
+            "location": "/usage/#inclusion-filter", 
+            "text": "{\n   op :  in ,\n   column :  column name ,\n   values : [ value1 , ... ]\n}  Parameters:   op - Must be  in  column - Dimension or metric name  values - List of values to filter on", 
+            "title": "Inclusion Filter"
+        }, 
+        {
+            "location": "/usage/#composite-filter", 
+            "text": "{\n   op :  composition operator ,\n   filters : [ ... ]\n}  Parameters:   op - One of composition operators:  or ,  and  filters - List of other filters to compose", 
+            "title": "Composite Filter"
+        }, 
+        {
+            "location": "/usage/#filter-example", 
+            "text": "Below is an example of using different filter types:  {\n   type :  aggregate ,\n   table :  activity ,\n   select : [\n    { column :  install_date },\n    { column :  ad_network },\n    { column :  install_country },\n    { column :  installs_count },\n    { column :  launches_count },\n    { column :  inapps_count }\n  ],\n   filter : { op :  and ,  filters : [\n    { op :  eq ,  column :  app_id ,  value :  com.teslacoilsw.notifier },\n    { op :  ge ,  column :  install_date ,  value :  2015-01-01 },\n    { op :  lt ,  column :  install_date ,  value :  2015-01-30 },\n    { op :  in ,  column :  install_country ,  values : [ US ,  IL ,  RU ]}\n  ]}\n}", 
+            "title": "Filter Example"
+        }, 
+        {
+            "location": "/usage/#sorting-results", 
+            "text": "You can ask to sort output results by set of columns, and specify sort order on each of them. Column sort configuration goes as follows:  {\n    column :  column name ,\n    ascending : true|false\n}  ascending  parameter can be ommitted, in this case the sort order will be descending.", 
+            "title": "Sorting Results"
+        }, 
+        {
+            "location": "/usage/#search-query", 
+            "text": "This query type retrieves dimension values by a given set of filters. This feature can come in handy when implementing a field values type assist, when developing an analytics user interface filter.  The basic format is the following:  {\n   type :  search ,\n   table :  table name ,\n   dimension :  dimension name ,\n   term :  search term ,\n   limit : 0,\n   filter :  ...\n}", 
+            "title": "Search Query"
+        }, 
+        {
+            "location": "/samples/", 
+            "text": "Samples\n\n\nThe following section contains several examples that cover most of the ViyaDB features.\n\n\nRunning\n\n\nIt's recommended to use Docker image of ViyaDB for running the samples.\nTo launch Docker container with latest ViyaDB version, run:\n\n\n~$ docker run -p 5000:5000 -ti viyadb/viyadb:latest\n\n\n\nMobile Attribution Tracking\n\n\nMobile attribution tracking is a powerful marketing tool that allows measuring productivity of users, advertisement campaigns, etc.\nThe biggest question that tools like this can answer is where has advertiser's money gone, and how to optimize future campaigns.\n\n\nHow does this work? Mobile application generates events upon user action, and delivers them to a server, where these events are\nbeing joined to the attribution data received from an ad network and different partners. Finally, the data is analyzed based on\na date an application was installed. What we need to know for the sake of example is that we have events of the following types:\n\n\n\n\nClick (clicking on an advertisement)\n\n\nImpression (viewing an advertisement)\n\n\nInstall (installing an application)\n\n\nIn-App Event (custom in-app event generated by an application)\n\n\nLaunch (application was launched)\n\n\nUninstall (application was removed from a mobile phone)\n\n\n\n\nIn case of click and impression events, install date actually means click/impression date.\n\n\nStarting ViyaDB\n\n\nCreate \ntable.json\n file containing:\n\n\n{\n  \nname\n: \nactivity\n,\n  \ndimensions\n: [\n    {\nname\n: \napp_id\n, \ncardinality\n: 20000},\n    {\nname\n: \ninstall_date\n, \ntype\n: \ntime\n},\n    {\nname\n: \ninstall_country\n, \ncardinality\n: 200},\n    {\nname\n: \ninstall_currency\n, \ncardinality\n: 200},\n    {\nname\n: \nad_network\n},\n    {\n      \nname\n: \ncampaign\n,\n      \ncardinality_guard\n: {\n        \ndimensions\n: [\napp_id\n, \ninstall_date\n, \nad_network\n],\n        \nlimit\n: 300\n      }\n    },\n    {\n      \nname\n: \ncampaign_id\n,\n      \ncardinality_guard\n: {\n        \ndimensions\n: [\napp_id\n, \ninstall_date\n, \nad_network\n],\n        \nlimit\n: 300\n      }\n    },\n    {\n      \nname\n: \nsite_id\n,\n      \ncardinality_guard\n: {\n        \ndimensions\n: [\napp_id\n, \ninstall_date\n, \nad_network\n],\n        \nlimit\n: 3000\n      }\n    },\n    {\nname\n: \nadset\n},\n    {\nname\n: \nadset_id\n},\n    {\nname\n: \nadgroup\n},\n    {\nname\n: \nadgroup_id\n},\n    {\nname\n: \nevent_country\n, \ncardinality\n: 200},\n    {\nname\n: \nevent_currency\n, \ncardinality\n: 200},\n    {\n      \nname\n: \nevent_name\n,\n      \ncardinality_guard\n: {\n        \ndimensions\n: [\napp_id\n, \ninstall_date\n],\n        \nlimit\n: 300\n      }\n    }\n  ],\n  \nmetrics\n: [\n    {\nname\n: \ninstall_cost\n, \ntype\n: \ndouble_sum\n},\n    {\nname\n: \ninstall_cost_alt\n, \ntype\n: \ndouble_sum\n},\n    {\nname\n: \nrevenue\n, \ntype\n: \ndouble_sum\n},\n    {\nname\n: \nrevenue_alt\n, \ntype\n: \ndouble_sum\n},\n    {\nname\n: \nclicks_count\n, \ntype\n: \nint_sum\n},\n    {\nname\n: \nimpressions_count\n, \ntype\n: \nint_sum\n},\n    {\nname\n: \ninstalls_count\n, \ntype\n: \nint_sum\n},\n    {\nname\n: \nlaunches_count\n, \ntype\n: \nint_sum\n},\n    {\nname\n: \ninapps_count\n, \ntype\n: \nint_sum\n},\n    {\nname\n: \nuninstalls_count\n, \ntype\n: \nint_sum\n}\n  ]\n}\n\n\n\n\nCreate the table by running:\n\n\n~$ curl -d @table.json http://localhost:5000/tables\n\n\n\nGenerating Sample Data\n\n\nTo generate 10M user activity events, run the following:\n\n\n~$ wget https://raw.githubusercontent.com/viyadb/samples/master/activity/generate.py\n~$ chmod +x ./generate.py\n~$ ./generate.py -d -n 10000000 \n data.tsv\n\n\n\nThis might take several minutes.\n\n\nQuerying\n\n\nThe following query aggregates by install date, ad network and country (at the moment of application install),\nand gives insights about revenue that mobile users brought during one month in USA and in Canada.\nThis helps understand what ad network was more effective in terms of payout by purchases in mobile app.\n\n\n{\n  \ntype\n: \naggregate\n,\n  \ntable\n: \nactivity\n,\n  \nselect\n: [\n    {\ncolumn\n: \ninstall_date\n},\n    {\ncolumn\n: \nad_network\n},\n    {\ncolumn\n: \ninstall_country\n},\n    {\ncolumn\n: \ninstalls_count\n},\n    {\ncolumn\n: \nrevenue\n}\n  ],\n  \nfilter\n: {\nop\n: \nand\n, \nfilters\n: [\n    {\nop\n: \neq\n, \ncolumn\n: \napp_id\n, \nvalue\n: \ncom.teslacoilsw.notifier\n},\n    {\nop\n: \nge\n, \ncolumn\n: \ninstall_date\n, \nvalue\n: \n2015-03-01\n},\n    {\nop\n: \nlt\n, \ncolumn\n: \ninstall_date\n, \nvalue\n: \n2015-03-30\n},\n    {\nop\n: \nin\n, \ncolumn\n: \ninstall_country\n, \nvalues\n: [\nUS\n, \nCA\n]}\n  ]}\n}\n\n\n\n\nSave the query in file \nquery.json\n, and run:\n\n\n~$ curl -d @query.json http://localhost:5000/query", 
+            "title": "Samples"
+        }, 
+        {
+            "location": "/samples/#samples", 
+            "text": "The following section contains several examples that cover most of the ViyaDB features.", 
+            "title": "Samples"
+        }, 
+        {
+            "location": "/samples/#running", 
+            "text": "It's recommended to use Docker image of ViyaDB for running the samples.\nTo launch Docker container with latest ViyaDB version, run:  ~$ docker run -p 5000:5000 -ti viyadb/viyadb:latest", 
+            "title": "Running"
+        }, 
+        {
+            "location": "/samples/#mobile-attribution-tracking", 
+            "text": "Mobile attribution tracking is a powerful marketing tool that allows measuring productivity of users, advertisement campaigns, etc.\nThe biggest question that tools like this can answer is where has advertiser's money gone, and how to optimize future campaigns.  How does this work? Mobile application generates events upon user action, and delivers them to a server, where these events are\nbeing joined to the attribution data received from an ad network and different partners. Finally, the data is analyzed based on\na date an application was installed. What we need to know for the sake of example is that we have events of the following types:   Click (clicking on an advertisement)  Impression (viewing an advertisement)  Install (installing an application)  In-App Event (custom in-app event generated by an application)  Launch (application was launched)  Uninstall (application was removed from a mobile phone)   In case of click and impression events, install date actually means click/impression date.", 
+            "title": "Mobile Attribution Tracking"
+        }, 
+        {
+            "location": "/samples/#starting-viyadb", 
+            "text": "Create  table.json  file containing:  {\n   name :  activity ,\n   dimensions : [\n    { name :  app_id ,  cardinality : 20000},\n    { name :  install_date ,  type :  time },\n    { name :  install_country ,  cardinality : 200},\n    { name :  install_currency ,  cardinality : 200},\n    { name :  ad_network },\n    {\n       name :  campaign ,\n       cardinality_guard : {\n         dimensions : [ app_id ,  install_date ,  ad_network ],\n         limit : 300\n      }\n    },\n    {\n       name :  campaign_id ,\n       cardinality_guard : {\n         dimensions : [ app_id ,  install_date ,  ad_network ],\n         limit : 300\n      }\n    },\n    {\n       name :  site_id ,\n       cardinality_guard : {\n         dimensions : [ app_id ,  install_date ,  ad_network ],\n         limit : 3000\n      }\n    },\n    { name :  adset },\n    { name :  adset_id },\n    { name :  adgroup },\n    { name :  adgroup_id },\n    { name :  event_country ,  cardinality : 200},\n    { name :  event_currency ,  cardinality : 200},\n    {\n       name :  event_name ,\n       cardinality_guard : {\n         dimensions : [ app_id ,  install_date ],\n         limit : 300\n      }\n    }\n  ],\n   metrics : [\n    { name :  install_cost ,  type :  double_sum },\n    { name :  install_cost_alt ,  type :  double_sum },\n    { name :  revenue ,  type :  double_sum },\n    { name :  revenue_alt ,  type :  double_sum },\n    { name :  clicks_count ,  type :  int_sum },\n    { name :  impressions_count ,  type :  int_sum },\n    { name :  installs_count ,  type :  int_sum },\n    { name :  launches_count ,  type :  int_sum },\n    { name :  inapps_count ,  type :  int_sum },\n    { name :  uninstalls_count ,  type :  int_sum }\n  ]\n}  Create the table by running:  ~$ curl -d @table.json http://localhost:5000/tables", 
+            "title": "Starting ViyaDB"
+        }, 
+        {
+            "location": "/samples/#generating-sample-data", 
+            "text": "To generate 10M user activity events, run the following:  ~$ wget https://raw.githubusercontent.com/viyadb/samples/master/activity/generate.py\n~$ chmod +x ./generate.py\n~$ ./generate.py -d -n 10000000   data.tsv  This might take several minutes.", 
+            "title": "Generating Sample Data"
+        }, 
+        {
+            "location": "/samples/#querying", 
+            "text": "The following query aggregates by install date, ad network and country (at the moment of application install),\nand gives insights about revenue that mobile users brought during one month in USA and in Canada.\nThis helps understand what ad network was more effective in terms of payout by purchases in mobile app.  {\n   type :  aggregate ,\n   table :  activity ,\n   select : [\n    { column :  install_date },\n    { column :  ad_network },\n    { column :  install_country },\n    { column :  installs_count },\n    { column :  revenue }\n  ],\n   filter : { op :  and ,  filters : [\n    { op :  eq ,  column :  app_id ,  value :  com.teslacoilsw.notifier },\n    { op :  ge ,  column :  install_date ,  value :  2015-03-01 },\n    { op :  lt ,  column :  install_date ,  value :  2015-03-30 },\n    { op :  in ,  column :  install_country ,  values : [ US ,  CA ]}\n  ]}\n}  Save the query in file  query.json , and run:  ~$ curl -d @query.json http://localhost:5000/query", 
+            "title": "Querying"
+        }
+    ]
+}

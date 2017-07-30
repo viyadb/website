@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Usage - ViyaDB</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Usage";
+    var mkdocs_page_input_path = "usage.md";
+    var mkdocs_page_url = "/usage/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> ViyaDB</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Overview</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Usage</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#usage">Usage</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#general">General</a></li>
+        
+            <li><a class="toctree-l3" href="#configuring-db-instance">Configuring DB Instance</a></li>
+        
+            <li><a class="toctree-l3" href="#creating-tables">Creating Tables</a></li>
+        
+            <li><a class="toctree-l3" href="#data-ingestion">Data Ingestion</a></li>
+        
+            <li><a class="toctree-l3" href="#querying">Querying</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../samples/">Samples</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">ViyaDB</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Usage</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="usage">Usage</h1>
+<p>The following section describes how to configure and run a ViyaDB instance.</p>
+<h2 id="general">General</h2>
+<p>Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See <a href="#data-ingestion">Data Ingestion</a> or <a href="#querying">Querying</a> sections below), but it can always be thought as a resource you're sending a request to is an action itself.</p>
+<h2 id="configuring-db-instance">Configuring DB Instance</h2>
+<p>Store descriptor preresents a configuration file of a single ViyaDB instance. The format is the following:</p>
+<pre><code class="json">{
+  &quot;query_threads&quot;: 1,
+  &quot;cpu&quot;: [ ... ],
+  &quot;workers&quot;: 1,
+  &quot;port&quot;: 5000,
+  &quot;tables&quot;: [ ... ],
+  &quot;statsd&quot;: {
+    &quot;host&quot;:  ... ,
+    &quot;port&quot;: 8125,
+    &quot;prefix&quot;: &quot;viyadb.%h.&quot;
+  }
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>query_threads - Number of threads that will serve queries, defaults to 1.</li>
+<li>cpu_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.</li>
+<li>workers - Number of workers to start, defaults to the number of available CPUs.</li>
+<li>port - REST service port number, defaults to 5000.</li>
+<li>tables - List of <a href="#creating-tables">table descriptors</a>.</li>
+<li>statsd - If specified, some metrics will be reported to the given Statsd host</li>
+</ul>
+<h2 id="creating-tables">Creating Tables</h2>
+<p>Table descriptors can be either a part of <a href="#configuring-db-instance">store descriptor</a>, or they can be created on-demand using REST API.</p>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;&lt;table name&gt;&quot;,
+  &quot;dimensions&quot;: [ ... ],
+  &quot;metrics&quot;: [ ... ]
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>name - Table name</li>
+<li>dimensions - List of <a href="#dimensions">dimension descriptors</a></li>
+<li>metrics - List of <a href="#metrics">metric descriptors</a></li>
+</ul>
+<h3 id="dimensions">Dimensions</h3>
+<p>There are four types of dimensions:</p>
+<ul>
+<li>String</li>
+<li>Numeric</li>
+<li>Time</li>
+<li>Microtime</li>
+</ul>
+<h4 id="string-dimension">String Dimension</h4>
+<p>String dimension is a basic one, and it's used to describe things like: country, user agent, event name, etc.
+Description format is as follows:</p>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;&lt;dimension name&gt;&quot;,
+  &quot;type&quot;: &quot;string&quot;,
+  &quot;length&quot;: ... ,
+  &quot;cardinality&quot;: ... ,
+  &quot;cardinality_guard&quot;: {
+    &quot;dimensions&quot;: [&quot;&lt;other dimension&gt;&quot;, ... ],
+    &quot;limit&quot;:  ... 
+  }
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>name - Column name</li>
+<li>type - Must be <code>string</code> (or can be omitted, since it's default)</li>
+<li>length - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).</li>
+<li>cardinality - Number of distinct values this column holds (optional, but it's recommended to set)</li>
+</ul>
+<p><code>cardinality_guard</code> allows defining a rule of how many distinct values is it possible to store per set
+of other dimensions. For example, we can decide to store at most 200 distinct event names per event date, per country.
+All other events will be accounted still, but they will be marked as <code>__exceeded</code>. This is really important option,
+especially when incoming events are not controlled by yourself, and you don't want your database memory to explode because
+someone decided to sent some random values.</p>
+<h4 id="numeric-dimension">Numeric Dimension</h4>
+<p>This dimension allows to store whole positive numbers as a non-metric column. Description format is:</p>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;&lt;dimension name&gt;&quot;,
+  &quot;type&quot;: &quot;numeric&quot;,
+  &quot;max&quot;:  ... 
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>name - Column name</li>
+<li>type - Must be <code>numeric</code>.</li>
+<li>max - Maximum number this column can be (optional, but it's recommended to set)</li>
+</ul>
+<h4 id="time-and-microtime-dimensions">Time and Microtime Dimensions</h4>
+<p>This dimension allows to store UTC time. The difference between the two is that <code>time</code> precision is up to seconds, while
+<code>microtime</code> precision is up to microseconds.</p>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;&lt;dimension name&gt;&quot;,
+  &quot;type&quot;: &quot;time|microtime&quot;,
+  &quot;format&quot;:  ... ,
+  &quot;granularity&quot;: &quot;&lt;time unit&gt;&quot;,
+  &quot;rollup_rules&quot;: [ ... ]
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>name - Column name</li>
+<li>type - The type is set according to the required precision</li>
+<li>format - Parse format used during data ingestion (check <a href="http://man7.org/linux/man-pages/man3/strptime.3.html">strptime</a> documentation for available modifiers)</li>
+<li>granularity - When specified, this time granularity will be used for rolling up events during data ingestion</li>
+<li>rollup_rules - Rules for dynamic period based rollup</li>
+</ul>
+<p>Supported time units:</p>
+<ul>
+<li>year</li>
+<li>month</li>
+<li>week</li>
+<li>day</li>
+<li>hour</li>
+<li>minute</li>
+<li>second</li>
+</ul>
+<p>Dynamic rollup rules are defined using the following format:</p>
+<pre><code class="json">{
+  &quot;after&quot;: &quot;&lt;num&gt; &lt;time unit&gt;&quot;
+  &quot;granularity&quot;: &quot;&lt;time unit&gt;&quot;
+}
+</code></pre>
+
+<p>For example, if the rules are:</p>
+<pre><code class="json">[{
+   &quot;after&quot;: &quot;3 month&quot;,
+   &quot;granularity&quot;: &quot;week&quot;
+ }, {
+   &quot;after&quot;: &quot;1 year&quot;,
+   &quot;granularity&quot;: &quot;month&quot;
+}]
+</code></pre>
+
+<p>Then events time column will change granularity dynamically to <code>weekly</code> after 3 months, to <code>monthly</code> after 1 year.</p>
+<h3 id="metrics">Metrics</h3>
+<p>There are three supported metric types:</p>
+<ul>
+<li>Value</li>
+<li>Count</li>
+<li>Bitset</li>
+</ul>
+<h2 id="data-ingestion">Data Ingestion</h2>
+<h3 id="loading-from-tsv-files">Loading from TSV files</h3>
+<p>Save load descriptor into <code>load.json</code> file:</p>
+<pre><code class="json">{
+  &quot;table&quot;: &quot;target_table&quot;,
+  &quot;format&quot;: &quot;tsv&quot;,
+  &quot;type&quot;: &quot;file&quot;,
+  &quot;file&quot;: &quot;/path/to/data.tsv&quot;
+}
+</code></pre>
+
+<p>Post this load descriptor to a running ViyaDB instance:</p>
+<pre><code>~$ curl --data-binary @load.json http://&lt;viyadb-host&gt;:&lt;viyadb-port&gt;/load
+</code></pre>
+<p>Important notes:</p>
+<ul>
+<li>The <code>data.tsv</code> file must be accessible to the ViyaDB instance you're loading the data into.</li>
+<li>Order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.</li>
+</ul>
+<h2 id="querying">Querying</h2>
+<p>Supported query types are:</p>
+<ul>
+<li>Aggregate</li>
+<li>Search</li>
+</ul>
+<p>To query, a query request must be submitted using POST method:</p>
+<pre><code>~$ curl --data-binary @query.json http://&lt;viyadb-host&gt;:&lt;viyadb-port&gt;/query
+</code></pre>
+<p>Read further to learn more on different query types.</p>
+<h3 id="aggregate-query">Aggregate Query</h3>
+<p>This kind of query aggregates records selected using filter predicate, and returns them to user (optionally, sorted and/or limited). It's important to know that aggregation is done in a memory, therefore all the result set must fit in.</p>
+<p>Query format:</p>
+<pre><code class="json">{
+  &quot;type&quot;: &quot;aggregate&quot;,
+  &quot;table&quot;: &quot;&lt;table name&gt;&quot;,
+  &quot;select&quot;: [ ... ],
+  &quot;filter&quot;:  ... ,
+  &quot;sort&quot;: [ ... ] ,
+  &quot;skip&quot;: 0,
+  &quot;limit&quot;: 0
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>table - Table name</li>
+<li>select - List of parameters describing how to select a column (see below)</li>
+<li>filter - Fitler description (see below)</li>
+<li>sort - Optional result sorting configuration (see below)</li>
+<li>skip - Optionally, skip this number of output records</li>
+<li>limit - Optionally, limit result set size to this number</li>
+</ul>
+<h4 id="column-selector">Column Selector</h4>
+<p>Column is either dimension or metric. The format of selecting either of them is the following:</p>
+<pre><code class="json">{
+  &quot;column&quot;: &quot;&lt;column name&gt;&quot;,
+  &quot;format&quot;: &quot;&lt;time format&gt;&quot;,
+  &quot;granularity&quot;: &quot;&lt;time granularity&gt;&quot;
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>column - Dimension or metric name</li>
+</ul>
+<p>Time column has two additional optional parameters:</p>
+<ul>
+<li>format - Time output format (check <a href="http://man7.org/linux/man-pages/man3/strptime.3.html">strptime</a> documentation for available modifiers). By default, UTC epoch timestamp will be sent</li>
+<li>granularity - Rollup results by this time unit (see <a href="#time-and-microtime-dimensions">time dimension</a> configuration for supported time units)</li>
+</ul>
+<h4 id="query-filters">Query Filters</h4>
+<p>Filter is one of mandatory parameters in a query, which allows skipping irrelevant records. There are four different filter types.</p>
+<h5 id="value-operator-filter">Value Operator Filter</h5>
+<pre><code class="json">{
+  &quot;op&quot;: &quot;&lt;filter operator&gt;&quot;,
+  &quot;column&quot;: &quot;&lt;column name&gt;&quot;,
+  &quot;value&quot;: &quot;&lt;filter value&gt;&quot;
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>op - Filter kind specified by operator</li>
+<li>column - Dimension or metric name</li>
+<li>value - Value that filter operates on</li>
+</ul>
+<p>Supported operators are:</p>
+<ul>
+<li>eq - Equals</li>
+<li>ne - Not equals</li>
+<li>lt - Less than</li>
+<li>le - Less or equals to</li>
+<li>gt - Greater than</li>
+<li>ge - Greater or equals to</li>
+</ul>
+<h5 id="negation-filter">Negation Filter</h5>
+<pre><code class="json">{
+  &quot;op&quot;: &quot;not&quot;,
+  &quot;filter&quot;:  ... 
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>op - Must be <code>not</code></li>
+<li>filter - Other filter descriptor</li>
+</ul>
+<h5 id="inclusion-filter">Inclusion Filter</h5>
+<pre><code class="json">{
+  &quot;op&quot;: &quot;in&quot;,
+  &quot;column&quot;: &quot;&lt;column name&gt;&quot;,
+  &quot;values&quot;: [&quot;value1&quot;, ... ]
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>op - Must be <code>in</code></li>
+<li>column - Dimension or metric name</li>
+<li>values - List of values to filter on</li>
+</ul>
+<h5 id="composite-filter">Composite Filter</h5>
+<pre><code class="json">{
+  &quot;op&quot;: &quot;&lt;composition operator&gt;&quot;,
+  &quot;filters&quot;: [ ... ]
+}
+</code></pre>
+
+<p>Parameters:</p>
+<ul>
+<li>op - One of composition operators: <code>or</code>, <code>and</code></li>
+<li>filters - List of other filters to compose</li>
+</ul>
+<h5 id="filter-example">Filter Example</h5>
+<p>Below is an example of using different filter types:</p>
+<pre><code class="json">{
+  &quot;type&quot;: &quot;aggregate&quot;,
+  &quot;table&quot;: &quot;activity&quot;,
+  &quot;select&quot;: [
+    {&quot;column&quot;: &quot;install_date&quot;},
+    {&quot;column&quot;: &quot;ad_network&quot;},
+    {&quot;column&quot;: &quot;install_country&quot;},
+    {&quot;column&quot;: &quot;installs_count&quot;},
+    {&quot;column&quot;: &quot;launches_count&quot;},
+    {&quot;column&quot;: &quot;inapps_count&quot;}
+  ],
+  &quot;filter&quot;: {&quot;op&quot;: &quot;and&quot;, &quot;filters&quot;: [
+    {&quot;op&quot;: &quot;eq&quot;, &quot;column&quot;: &quot;app_id&quot;, &quot;value&quot;: &quot;com.teslacoilsw.notifier&quot;},
+    {&quot;op&quot;: &quot;ge&quot;, &quot;column&quot;: &quot;install_date&quot;, &quot;value&quot;: &quot;2015-01-01&quot;},
+    {&quot;op&quot;: &quot;lt&quot;, &quot;column&quot;: &quot;install_date&quot;, &quot;value&quot;: &quot;2015-01-30&quot;},
+    {&quot;op&quot;: &quot;in&quot;, &quot;column&quot;: &quot;install_country&quot;, &quot;values&quot;: [&quot;US&quot;, &quot;IL&quot;, &quot;RU&quot;]}
+  ]}
+}
+</code></pre>
+
+<h4 id="sorting-results">Sorting Results</h4>
+<p>You can ask to sort output results by set of columns, and specify sort order on each of them. Column sort configuration goes as follows:</p>
+<pre><code class="json">{
+   &quot;column&quot;: &quot;&lt;column name&gt;&quot;,
+   &quot;ascending&quot;: true|false
+}
+</code></pre>
+
+<p><code>ascending</code> parameter can be ommitted, in this case the sort order will be descending. </p>
+<h3 id="search-query">Search Query</h3>
+<p>This query type retrieves dimension values by a given set of filters. This feature can come in handy when implementing a field values type assist, when developing an analytics user interface filter.</p>
+<p>The basic format is the following:</p>
+<pre><code class="json">{
+  &quot;type&quot;: &quot;search&quot;,
+  &quot;table&quot;: &quot;&lt;table name&gt;&quot;,
+  &quot;dimension&quot;: &quot;&lt;dimension name&gt;&quot;,
+  &quot;term&quot;: &quot;&lt;search term&gt;&quot;,
+  &quot;limit&quot;: 0,
+  &quot;filter&quot;:  ...
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../samples/" class="btn btn-neutral float-right" title="Samples">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../samples/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>
