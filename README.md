@@ -1,16 +1,17 @@
 website
 ========
 
-Contents of http://viyadb.com Website.
+Source of http://viyadb.com Website.
 
 ## Pre-requisites
 
-    ~$ pip install mkdocs
+    pip install mkdocs mkdocs-material pygments
    
 ## Running locally
 
-    ~$ mkdocs serve
+    mkdocs serve
 
 ## Deployment
 
-    ~$ mkdocs gh-deploy
+    mkdocs gh-deploy
+

@@ -55,7 +55,9 @@ Parameters:
  
 To create a table, issue the following command:
 
-    ~$ curl --data-binary @table.json http://<viyadb-host>:<viyadb-port>/tables
+```bash
+curl --data-binary @table.json http://<viyadb-host>:<viyadb-port>/tables
+```
 
 ### Dimensions
 
@@ -196,7 +198,9 @@ Save load descriptor into `load.json` file:
 
 Post this load descriptor to a running ViyaDB instance:
 
-    ~$ curl --data-binary @load.json http://<viyadb-host>:<viyadb-port>/load
+```bash
+curl --data-binary @load.json http://<viyadb-host>:<viyadb-port>/load
+```
 
 Important notes:
 
@@ -212,7 +216,9 @@ Supported query types are:
 
 To query, a query request must be submitted using POST method:
 
-    ~$ curl --data-binary @query.json http://<viyadb-host>:<viyadb-port>/query
+```
+curl --data-binary @query.json http://<viyadb-host>:<viyadb-port>/query
+```
 
 Read further to learn more on different query types.
     

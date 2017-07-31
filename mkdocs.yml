@@ -1,6 +1,20 @@
 site_name: ViyaDB
+site_description: In-Memory Analytical Database
+site_favicon: 'img/favicon.png'
 pages:
-  - Overview: index.md
-  - Usage: usage.md
-  - Samples: samples.md
-theme: readthedocs
+  - index.md
+  - usage.md
+  - samples.md
+extra:
+  logo: 'img/logo.svg'
+  social:
+    - type: 'twitter'
+      link: 'https://twitter.com/viyadb'
+  palette:
+    primary: 'blue grey'
+    accent: 'cyan'
+theme: 'material'
+markdown_extensions:
+  - codehilite
+  - toc(permalink=true)
+  - admonition

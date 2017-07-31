@@ -43,4 +43,5 @@ Dimension cardinality can be applied either on a dimension independently or base
 
 ## Supported Systems
 
-The only supported system is Linux x86_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.
+The only supported system is Linux x86\_64 with the latest GCC or CLang compiler installed. This strict requirement allows focusing on extracting the most of performance from the underlying system.
+
