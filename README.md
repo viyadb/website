@@ -1,7 +1,7 @@
 website
 ========
 
-Source of http://viyadb.com Website.
+This repository contains ViyaDB documentation hosted on viyadb.com.
 
 ## Pre-requisites
 
