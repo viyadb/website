@@ -240,6 +240,33 @@
     Metrics
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-metric" title="Value Metric" class="md-nav__link">
+    Value Metric
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count-metric" title="Count Metric" class="md-nav__link">
+    Count Metric
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitset-metric" title="Bitset Metric" class="md-nav__link">
+    Bitset Metric
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -464,6 +491,33 @@
     Metrics
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#value-metric" title="Value Metric" class="md-nav__link">
+    Value Metric
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#count-metric" title="Count Metric" class="md-nav__link">
+    Count Metric
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitset-metric" title="Bitset Metric" class="md-nav__link">
+    Bitset Metric
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -602,7 +656,7 @@
                 
                 
                 <h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h1>
-<p>The following section describes how to configure and run a ViyaDB instance.</p>
+<p>The following section describes how to configure and run a ViyaDB instance on a single node.</p>
 <h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">&para;</a></h2>
 <p>Interaction with ViyaDB instance is performed using REST API. Sometimes, it doesn't look like REST (See <a href="#data-ingestion">Data Ingestion</a> or <a href="#querying">Querying</a> sections below), but it can always be thought as a resource you're sending a request to is an action itself.</p>
 <h2 id="configuring-db-instance">Configuring DB Instance<a class="headerlink" href="#configuring-db-instance" title="Permanent link">&para;</a></h2>
@@ -652,6 +706,14 @@
 </pre></div>
 
 
+<div class="admonition note">
+<p class="admonition-title">Explanation in SQL terms</p>
+<p>An analogy can be drawn between ViyaDB tables and SQL aggregation queries.
+For example, consider the following SQL statement:</p>
+<p><code>sql
+SELECT app_id, SUM(revenue) FROM events GROUP BY app_id</code></p>
+<p>This example translates to ViyaDB table <code>events</code> that has a single dimension <code>app_id</code> and a single metric <code>revenue</code>.</p>
+</div>
 <h3 id="dimensions">Dimensions<a class="headerlink" href="#dimensions" title="Permanent link">&para;</a></h3>
 <p>There are four types of dimensions:</p>
 <ul>
@@ -762,6 +824,51 @@ someone decided to sent some random values.</p>
 <li>Count</li>
 <li>Bitset</li>
 </ul>
+<h4 id="value-metric">Value Metric<a class="headerlink" href="#value-metric" title="Permanent link">&para;</a></h4>
+<p>Value metric is a numeric value combined with an aggregation function.  List of supported numeric types:</p>
+<ul>
+<li>int</li>
+<li>uint</li>
+<li>long</li>
+<li>ulong</li>
+<li>double</li>
+</ul>
+<p>Supported functions:</p>
+<ul>
+<li>sum</li>
+<li>max</li>
+<li>min</li>
+</ul>
+<p>The format of defining a value metric is the following:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;metric name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value_type&gt;_&lt;function&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="count-metric">Count Metric<a class="headerlink" href="#count-metric" title="Permanent link">&para;</a></h4>
+<p>This type of metric just counts number of incoming rows. To define it, use the following format:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;metric name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h4 id="bitset-metric">Bitset Metric<a class="headerlink" href="#bitset-metric" title="Permanent link">&para;</a></h4>
+<p>This metric allows storing numeric values in a memory optimized set structure, which supports
+operations like <code>intersect</code> and <code>union</code>. This makes possible to run queries like: "what is a value
+cardinality for a given set of dimensions filtered by a perdicate?". For instance: counting unique
+mobile app users, which installed an application on last month split by country.</p>
+<p>Metric format:</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;metric name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bitset&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
 <h2 id="data-ingestion">Data Ingestion<a class="headerlink" href="#data-ingestion" title="Permanent link">&para;</a></h2>
 <h3 id="loading-from-tsv-files">Loading from TSV files<a class="headerlink" href="#loading-from-tsv-files" title="Permanent link">&para;</a></h3>
 <p>Save load descriptor into <code>load.json</code> file:</p>
