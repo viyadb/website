@@ -1,7 +1,7 @@
 Usage
 ======
 
-The following section describes how to configure and run a ViyaDB instance.
+The following section describes how to configure and run a ViyaDB instance on a single node.
 
 ## General
 
@@ -58,6 +58,16 @@ To create a table, issue the following command:
 ```bash
 curl --data-binary @table.json http://<viyadb-host>:<viyadb-port>/tables
 ```
+
+!!! note "Explanation in SQL terms"
+    An analogy can be drawn between ViyaDB tables and SQL aggregation queries.
+    For example, consider the following SQL statement:
+
+    ```sql
+    SELECT app_id, SUM(revenue) FROM events GROUP BY app_id
+    ```
+
+    This example translates to ViyaDB table `events` that has a single dimension `app_id` and a single metric `revenue`.
 
 ### Dimensions
 
@@ -180,6 +190,59 @@ There are three supported metric types:
  * Value
  * Count
  * Bitset
+
+#### Value Metric
+
+Value metric is a numeric value combined with an aggregation function.  List of supported numeric types:
+
+ + int
+ + uint
+ + long
+ + ulong
+ + double
+
+Supported functions:
+
+ + sum
+ + max
+ + min
+
+The format of defining a value metric is the following:
+
+```json
+{
+  "name": "<metric name>",
+  "type": "<value_type>_<function>"
+}
+```
+
+#### Count Metric
+
+This type of metric just counts number of incoming rows. To define it, use the following format:
+
+```json
+{
+  "name": "<metric name>",
+  "type": "count"
+}
+```
+
+#### Bitset Metric
+
+This metric allows storing numeric values in a memory optimized set structure, which supports
+operations like `intersect` and `union`. This makes possible to run queries like: "what is a value
+cardinality for a given set of dimensions filtered by a perdicate?". For instance: counting unique
+mobile app users, which installed an application on last month split by country.
+
+Metric format:
+
+
+```json
+{
+  "name": "<metric name>",
+  "type": "bitset"
+}
+```
 
 ## Data Ingestion
 
