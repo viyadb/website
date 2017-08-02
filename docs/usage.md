@@ -31,9 +31,9 @@ Parameters:
  * query\_threads - Number of threads that will serve queries, defaults to 1.
  * cpu\_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.
  * workers - Number of workers to start, defaults to the number of available CPUs.
- * port - REST service port number, defaults to 5000.
+ * port - All workers will be assigned a different port number, starting from this one (defaults to 5000).
  * tables - List of [table descriptors](#creating-tables).
- * statsd - If specified, some metrics will be reported to the given Statsd host
+ * statsd - If specified, some metrics will be reported to the given Statsd host.
 
 ## Creating Tables
 

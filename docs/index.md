@@ -29,6 +29,8 @@ Every event consists of two sets:
  
 Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc. Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.
 
+Incoming events are aggregated during data ingestion based on defined metric functions, which means that the database stores aggregated data.
+
 For more information on supported data types, please refer to Data Ingestion section on [usage](/usage) page.
 
 ### Column Names
