@@ -355,6 +355,7 @@
 <li>Metrics</li>
 </ul>
 <p>Dimensions are event descriptors. Example of dimensions are: country, user agent, event time, install time, etc. Metrics are values, mostly numeric. Examples are: events count, temperature, revenue, etc.</p>
+<p>Incoming events are aggregated during data ingestion based on defined metric functions, which means that the database stores aggregated data.</p>
 <p>For more information on supported data types, please refer to Data Ingestion section on <a href="./usage">usage</a> page.</p>
 <h3 id="column-names">Column Names<a class="headerlink" href="#column-names" title="Permanent link">&para;</a></h3>
 <p>Dimension names are global per database instance. That means if dimension is named 'country' in a two different tables it must have the same meaning (or, more specifically, must share the same set of values).</p>

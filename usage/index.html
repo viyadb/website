@@ -681,9 +681,9 @@
 <li>query_threads - Number of threads that will serve queries, defaults to 1.</li>
 <li>cpu_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.</li>
 <li>workers - Number of workers to start, defaults to the number of available CPUs.</li>
-<li>port - REST service port number, defaults to 5000.</li>
+<li>port - All workers will be assigned a different port number, starting from this one (defaults to 5000).</li>
 <li>tables - List of <a href="#creating-tables">table descriptors</a>.</li>
-<li>statsd - If specified, some metrics will be reported to the given Statsd host</li>
+<li>statsd - If specified, some metrics will be reported to the given Statsd host.</li>
 </ul>
 <h2 id="creating-tables">Creating Tables<a class="headerlink" href="#creating-tables" title="Permanent link">&para;</a></h2>
 <p>Table descriptors can be either a part of <a href="#configuring-db-instance">store descriptor</a>, or they can be created on-demand using REST API.</p>
