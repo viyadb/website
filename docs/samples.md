@@ -104,7 +104,7 @@ curl -d @table.json http://localhost:5000/tables
 To generate 10M user activity events, run the following:
 
 ```bash
-wget https://raw.githubusercontent.com/viyadb/samples/master/activity/generate.py
+wget https://raw.githubusercontent.com/viyadb/viyadb-samples/master/activity/generate.py
 chmod +x ./generate.py
 ./generate.py -d -n 10000000 > data.tsv
 ```
