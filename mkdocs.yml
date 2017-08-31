@@ -1,6 +1,9 @@
 site_name: ViyaDB
 site_description: In-Memory Analytical Database
 site_favicon: 'img/favicon.png'
+google_analytics:
+  - 'UA-23508932-8'
+  - 'auto'
 pages:
   - index.md
   - usage.md
