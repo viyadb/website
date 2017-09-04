@@ -43,7 +43,11 @@ Table descriptors can be either a part of [store descriptor](#configuring-db-ins
 {
   "name": "<table name>",
   "dimensions": [ ... ],
-  "metrics": [ ... ]
+  "metrics": [ ... ],
+  "watch": {
+    "directory": "<path to files>",
+    "extensions": [".tsv"]
+  }
 }
 ```
 
@@ -52,6 +56,7 @@ Parameters:
  * name - Table name
  * dimensions - List of [dimension descriptors](#dimensions)
  * metrics - List of [metric descriptors](#metrics)
+ * watch - Optional configuration that enables watching directory for new files, and loading them automatically.
  
 To create a table, issue the following command:
 
