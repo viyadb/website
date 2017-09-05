@@ -11,8 +11,12 @@ pages:
 extra:
   logo: 'img/logo.svg'
   social:
+    - type: 'github'
+      link: 'https://github.com/viyadb'
     - type: 'twitter'
       link: 'https://twitter.com/viyadb'
+    - type: 'linkedin'
+      link: 'https://www.linkedin.com/company/18228559'
   palette:
     primary: 'blue grey'
     accent: 'cyan'
