@@ -80,6 +80,7 @@ There are four types of dimensions:
 
  * String
  * Numeric
+ * Boolean
  * Time
  * Microtime
 
@@ -131,6 +132,22 @@ Parameters:
  * name - Column name
  * type - Must be `numeric`.
  * max - Maximum number this column can be (optional, but it's recommended to set)
+
+#### Boolean Dimension
+
+Stores either boolean value of 'true' or 'false'.
+
+```json
+{
+  "name": "<dimension name>",
+  "type": "boolean"
+}
+```
+
+Parameters:
+
+ * name - Column name
+ * type - Must be `boolean`.
 
 #### Time and Microtime Dimensions
 
