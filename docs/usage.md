@@ -16,7 +16,7 @@ Store descriptor preresents a configuration file of a single ViyaDB instance. Th
   "query_threads": 1,
   "cpu": [ ... ],
   "workers": 1,
-  "port": 5000,
+  "http_port": 5000,
   "tables": [ ... ],
   "statsd": {
     "host":  ... ,
