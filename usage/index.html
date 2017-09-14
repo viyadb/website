@@ -689,19 +689,21 @@
     <span class="nt">&quot;host&quot;</span><span class="p">:</span>  <span class="err">...</span> <span class="p">,</span>
     <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">8125</span><span class="p">,</span>
     <span class="nt">&quot;prefix&quot;</span><span class="p">:</span> <span class="s2">&quot;viyadb.%h.&quot;</span>
-  <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;supervise&quot;</span><span class="p">:</span> <span class="kc">false</span>
 <span class="p">}</span>
 </pre></div>
 
 
 <p>Parameters:</p>
 <ul>
-<li>query_threads - Number of threads that will serve queries, defaults to 1.</li>
-<li>cpu_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.</li>
-<li>workers - Number of workers to start, defaults to the number of available CPUs.</li>
+<li>query_threads - Optional number of threads that will serve queries, defaults to 1.</li>
+<li>cpu_list - Optional list of zero-based CPU indices that this process will use, defaults to all available CPUs.</li>
+<li>workers - Optional number of workers to start, defaults to the number of available CPUs.</li>
 <li>port - All workers will be assigned a different port number, starting from this one (defaults to 5000).</li>
 <li>tables - List of <a href="#creating-tables">table descriptors</a>.</li>
 <li>statsd - If specified, some metrics will be reported to the given Statsd host.</li>
+<li>supervise - Optionally, run a supervisor on top of worker processes. This setting must be <code>true</code> if number of workers is greater than 1.</li>
 </ul>
 <h2 id="creating-tables">Creating Tables<a class="headerlink" href="#creating-tables" title="Permanent link">&para;</a></h2>
 <p>Table descriptors can be either a part of <a href="#configuring-db-instance">store descriptor</a>, or they can be created on-demand using REST API.</p>
