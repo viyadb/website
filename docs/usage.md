@@ -22,18 +22,20 @@ Store descriptor preresents a configuration file of a single ViyaDB instance. Th
     "host":  ... ,
     "port": 8125,
     "prefix": "viyadb.%h."
-  }
+  },
+  "supervise": false
 }
 ```
 
 Parameters:
 
- * query\_threads - Number of threads that will serve queries, defaults to 1.
- * cpu\_list - List of zero-based CPU indices that this process will use, defaults to all available CPUs.
- * workers - Number of workers to start, defaults to the number of available CPUs.
+ * query\_threads - Optional number of threads that will serve queries, defaults to 1.
+ * cpu\_list - Optional list of zero-based CPU indices that this process will use, defaults to all available CPUs.
+ * workers - Optional number of workers to start, defaults to the number of available CPUs.
  * port - All workers will be assigned a different port number, starting from this one (defaults to 5000).
  * tables - List of [table descriptors](#creating-tables).
  * statsd - If specified, some metrics will be reported to the given Statsd host.
+ * supervise - Optionally, run a supervisor on top of worker processes. This setting must be `true` if number of workers is greater than 1.
 
 ## Creating Tables
 
