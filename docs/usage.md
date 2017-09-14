@@ -168,9 +168,16 @@ Parameters:
 
  * name - Column name
  * type - The type is set according to the required precision
- * format - Parse format used during data ingestion (check [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) documentation for available modifiers)
+ * format - See below
  * granularity - When specified, this time granularity will be used for rolling up events during data ingestion
  * rollup\_rules - Rules for dynamic period based rollup
+
+Parse format is one of the following:
+
+ * posix - Input time is in POSIX time format (seconds since UNIX epoch)
+ * millis - Input time is in milliseconds since UNIX epoch
+ * micros - Input time is in microseconds since UNIX epoch
+ * Any other string that uses [strptime](http://man7.org/linux/man-pages/man3/strptime.3.html) modifiers for describing format
 
 Supported time units:
 
