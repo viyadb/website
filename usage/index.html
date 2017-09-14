@@ -821,9 +821,16 @@ someone decided to sent some random values.</p>
 <ul>
 <li>name - Column name</li>
 <li>type - The type is set according to the required precision</li>
-<li>format - Parse format used during data ingestion (check <a href="http://man7.org/linux/man-pages/man3/strptime.3.html">strptime</a> documentation for available modifiers)</li>
+<li>format - See below</li>
 <li>granularity - When specified, this time granularity will be used for rolling up events during data ingestion</li>
 <li>rollup_rules - Rules for dynamic period based rollup</li>
+</ul>
+<p>Parse format is one of the following:</p>
+<ul>
+<li>posix - Input time is in POSIX time format (seconds since UNIX epoch)</li>
+<li>millis - Input time is in milliseconds since UNIX epoch</li>
+<li>micros - Input time is in microseconds since UNIX epoch</li>
+<li>Any other string that uses <a href="http://man7.org/linux/man-pages/man3/strptime.3.html">strptime</a> modifiers for describing format</li>
 </ul>
 <p>Supported time units:</p>
 <ul>
