@@ -101,6 +101,8 @@ curl -d @table.json http://localhost:5000/tables
 
 ### Generating Sample Data
 
+Generating sample data requires Python 2.7 and [Faker](https://faker.readthedocs.io/en/master/) module installed on your computer.
+
 To generate 10M user activity events, run the following:
 
 ```bash
