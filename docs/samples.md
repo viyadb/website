@@ -9,7 +9,7 @@ It's recommended to use Docker image of ViyaDB for running the samples.
 To launch Docker container with latest ViyaDB version, run:
 
 ```bash
-docker run -p 5000:5000 -ti viyadb/viyadb:latest
+docker run -p 5000:5000 --rm -ti -v /tmp/viyadb:/tmp/viyadb viyadb/viyadb:latest
 ```
 
 ## Mobile Attribution Tracking
@@ -104,12 +104,32 @@ curl -d @table.json http://localhost:5000/tables
 To generate 10M user activity events, run the following:
 
 ```bash
-wget https://raw.githubusercontent.com/viyadb/viyadb-samples/master/activity/generate.py
-chmod +x ./generate.py
-./generate.py -d -n 10000000 > data.tsv
+wget -q https://github.com/viyadb/viyadb-samples/archive/master.zip
+unzip master.zip
+viyadb-samples-master/activity/
+./generate.py -d -n 10000 > /tmp/viyadb/data.tsv
 ```
 
 This might take several minutes.
+
+### Loading Data
+
+Create load descriptor as follows:
+
+```json
+{
+  "table": "activity",
+  "format": "tsv",
+  "type": "file",
+  "file": "/tmp/viyadb/data.tsv"
+}
+```
+
+Load the data by running:
+
+```bash
+curl -d @load.json http://localhost:5000/load
+```
 
 ### Querying
 
