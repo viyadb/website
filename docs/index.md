@@ -3,6 +3,7 @@ Overview
 
 ViyaDB is in-memory columnar analytical data store, featuring:
 
+- Fast ad-hoc analytical queries
 - Random access update pattern
 - Built-in cardinality protection
 - Real-time query compilation to machine code
