@@ -3,6 +3,7 @@ Overview
 
 ViyaDB is in-memory columnar analytical data store, featuring:
 
+- Fast ad-hoc analytical queries
 - Random access update pattern
 - Built-in cardinality protection
 - Real-time query compilation to machine code
@@ -42,6 +43,10 @@ Dimension names are global per database instance. That means if dimension is nam
 Cardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as "Other"), but also makes possible doing optimizations that improve database performance and save memory.
 
 Dimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.
+
+## Query Compilation
+
+The first time a query is introduced to ViyaDB, a highly optimized C++ source code is generated, and the compiled version of this code is used for physical data access. That allows to minimize branch mis-predictions, increase the level of CPU cache locality, etc. That means that the first execution of a new query type will take some extra time needed for compiling it, all the subsequent queries of the same type will use already compiled version.
 
 ## Supported Systems
 
