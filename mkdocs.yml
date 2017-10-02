@@ -10,6 +10,7 @@ pages:
   - index.md
   - usage.md
   - samples.md
+  - clustering.md
 extra:
   logo: 'img/logo.svg'
   social:
