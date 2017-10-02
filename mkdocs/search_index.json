@@ -219,6 +219,16 @@
             "location": "/samples/#querying", 
             "text": "The following query aggregates by install date, ad network and country (at the moment of application install),\nand gives insights about revenue that mobile users brought during one month in USA and in Canada.\nThis helps understand what ad network was more effective in terms of payout by purchases in mobile app.  { \n   type :   aggregate , \n   table :   activity , \n   select :   [ \n     { column :   install_date }, \n     { column :   ad_network }, \n     { column :   install_country }, \n     { column :   installs_count }, \n     { column :   revenue } \n   ], \n   filter :   { op :   and ,   filters :   [ \n     { op :   eq ,   column :   app_id ,   value :   com.teslacoilsw.notifier }, \n     { op :   ge ,   column :   install_date ,   value :   2015-03-01 }, \n     { op :   lt ,   column :   install_date ,   value :   2015-03-30 }, \n     { op :   in ,   column :   install_country ,   values :   [ US ,   CA ]} \n   ]}  }   Save the query in file  query.json , and run:  curl -d @query.json http://localhost:5000/query", 
             "title": "Querying"
+        }, 
+        {
+            "location": "/clustering/", 
+            "text": "Clustering\n\n\nViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.\n\n\nOne possible implementation looks like follows:\n\n\n\n\nThe work is still in progress. To get involved into design considerations please start\na new discussion on the \nuser group\n,\nor drop me a line at \nmichael@viyadb.com\n.", 
+            "title": "Clustering"
+        }, 
+        {
+            "location": "/clustering/#clustering", 
+            "text": "ViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.  One possible implementation looks like follows:   The work is still in progress. To get involved into design considerations please start\na new discussion on the  user group ,\nor drop me a line at  michael@viyadb.com .", 
+            "title": "Clustering"
         }
     ]
 }

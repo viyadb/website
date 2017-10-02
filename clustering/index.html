@@ -12,22 +12,22 @@
       
       
       
-        <link rel="shortcut icon" href="/img/favicon.png">
+        <link rel="shortcut icon" href="../img/favicon.png">
       
       <meta name="generator" content="mkdocs-0.16.3, mkdocs-material-1.10.0">
     
     
       
-        <title>ViyaDB</title>
+        <title>Clustering - ViyaDB</title>
       
     
     
-      <script src="/assets/javascripts/modernizr-e826f8942a.js"></script>
+      <script src="../assets/javascripts/modernizr-e826f8942a.js"></script>
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/application-b6a6d08807.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application-b6a6d08807.css">
       
-        <link rel="stylesheet" href="/assets/stylesheets/application-23f75ab9c7.palette.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-23f75ab9c7.palette.css">
       
     
     
@@ -41,7 +41,7 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     
     
-      <link rel="stylesheet" href="/css/extra.css">
+      <link rel="stylesheet" href="../css/extra.css">
     
     
   </head>
@@ -67,10 +67,10 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="/" title="ViyaDB" class="md-header-nav__button md-logo">
+        <a href=".." title="ViyaDB" class="md-header-nav__button md-logo">
           
             
-              <img src="/img/logo.svg" width="24" height="24">
+              <img src="../img/logo.svg" width="24" height="24">
             
           
         </a>
@@ -82,7 +82,9 @@
         <span class="md-flex__ellipsis md-header-nav__title">
           
             
-            ViyaDB
+              
+            
+            Clustering
           
         </span>
       </div>
@@ -156,7 +158,7 @@
     <div class="md-nav__button md-logo">
       
         
-          <img src="/img/logo.svg">
+          <img src="../img/logo.svg">
         
       
     </div>
@@ -193,7 +195,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/" title="Home" class="md-nav__link">
+    <a href=".." title="Home" class="md-nav__link">
       Home
     </a>
   </li>
@@ -205,7 +207,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/usage/" title="Usage" class="md-nav__link">
+    <a href="../usage/" title="Usage" class="md-nav__link">
       Usage
     </a>
   </li>
@@ -217,7 +219,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/samples/" title="Samples" class="md-nav__link">
+    <a href="../samples/" title="Samples" class="md-nav__link">
       Samples
     </a>
   </li>
@@ -227,11 +229,20 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="/clustering/" title="Clustering" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+    <a href="./" title="Clustering" class="md-nav__link md-nav__link--active">
       Clustering
     </a>
+    
   </li>
 
     
@@ -242,12 +253,40 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
-
+                
+                
+                <h1 id="clustering">Clustering<a class="headerlink" href="#clustering" title="Permanent link">&para;</a></h1>
+<p>ViyaDB implements shared nothing articecture, which means that workers hold partitions
+of data independently from each other. This allows for many possible implementations of
+clustering depending on business needs.</p>
+<p>One possible implementation looks like follows:</p>
+<p><img alt="Clustering Example" src="../img/clustering1.png" /></p>
+<p>The work is still in progress. To get involved into design considerations please start
+a new discussion on the <a href="https://groups.google.com/forum/#!forum/viyadb">user group</a>,
+or drop me a line at <a href="mailto:michael@viyadb.com">michael@viyadb.com</a>.</p>
+                
+                  
+                
+              
               
                 
               
@@ -258,6 +297,27 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../samples/" title="Samples" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Samples
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -292,10 +352,10 @@
       
     </div>
     
-      <script src="/assets/javascripts/application-f3ab9e5ff8.js"></script>
+      <script src="../assets/javascripts/application-f3ab9e5ff8.js"></script>
       
       
-      <script>app.initialize({url:{base:""}})</script>
+      <script>app.initialize({url:{base:".."}})</script>
       
     
     
