@@ -5,7 +5,7 @@ ViyaDB implements shared nothing articecture, which means that workers hold part
 of data independently from each other. This allows for many possible implementations of
 clustering depending on business needs.
 
-One possible implementation looks like follows:
+One possible implementation might look as follows:
 
 ![Clustering Example](img/clustering1.png)
 
