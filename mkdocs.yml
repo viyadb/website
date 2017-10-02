@@ -1,6 +1,8 @@
 site_name: ViyaDB
 site_description: In-Memory Analytical Database
 site_favicon: 'img/favicon.png'
+repo_name: 'viyadb/viyadb'
+repo_url: 'https://github.com/viyadb/viyadb'
 google_analytics:
   - 'UA-23508932-8'
   - 'auto'
@@ -17,6 +19,8 @@ extra:
       link: 'https://twitter.com/viyadb'
     - type: 'linkedin'
       link: 'https://www.linkedin.com/company/18228559'
+    - type: 'envelope'
+      link: 'mailto:michael@viyadb.com'
   palette:
     primary: 'blue grey'
     accent: 'cyan'
@@ -25,3 +29,5 @@ markdown_extensions:
   - codehilite
   - toc(permalink=true)
   - admonition
+extra_css:
+  - 'css/extra.css'
