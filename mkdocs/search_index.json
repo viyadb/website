@@ -222,12 +222,12 @@
         }, 
         {
             "location": "/clustering/", 
-            "text": "Clustering\n\n\nViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.\n\n\nOne possible implementation looks like follows:\n\n\n\n\nThe work is still in progress. To get involved into design considerations please start\na new discussion on the \nuser group\n,\nor drop me a line at \nmichael@viyadb.com\n.", 
+            "text": "Clustering\n\n\nViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.\n\n\nOne possible implementation might look as follows:\n\n\n\n\nThe work is still in progress. To get involved into design considerations please start\na new discussion on the \nuser group\n,\nor drop me a line at \nmichael@viyadb.com\n.", 
             "title": "Clustering"
         }, 
         {
             "location": "/clustering/#clustering", 
-            "text": "ViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.  One possible implementation looks like follows:   The work is still in progress. To get involved into design considerations please start\na new discussion on the  user group ,\nor drop me a line at  michael@viyadb.com .", 
+            "text": "ViyaDB implements shared nothing articecture, which means that workers hold partitions\nof data independently from each other. This allows for many possible implementations of\nclustering depending on business needs.  One possible implementation might look as follows:   The work is still in progress. To get involved into design considerations please start\na new discussion on the  user group ,\nor drop me a line at  michael@viyadb.com .", 
             "title": "Clustering"
         }
     ]
