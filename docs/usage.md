@@ -492,3 +492,26 @@ The basic format is the following:
   "filter":  ...
 }
 ```
+
+### Metadata Queries
+
+There are several endpoints that can be used for retreiving information about database status.
+
+#### Database Metadata Query
+
+The following query returns basic information about the database:
+
+```bash
+curl http://<viyadb-host>:<viyadb-port>/database/meta
+```
+
+#### Table Metadata Query
+
+To see all available table fields, their types as long as some basic statistics
+use the following query:
+
+```bash
+curl http://<viyadb-host>:<viyadb-port>/tables/<table name>/meta
+```
+
+
