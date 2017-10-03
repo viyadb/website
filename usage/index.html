@@ -445,6 +445,33 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#metadata-queries" title="Metadata Queries" class="md-nav__link">
+    Metadata Queries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-metadata-query" title="Database Metadata Query" class="md-nav__link">
+    Database Metadata Query
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-metadata-query" title="Table Metadata Query" class="md-nav__link">
+    Table Metadata Query
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -712,6 +739,33 @@
   <a href="#search-query" title="Search Query" class="md-nav__link">
     Search Query
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-queries" title="Metadata Queries" class="md-nav__link">
+    Metadata Queries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#database-metadata-query" title="Database Metadata Query" class="md-nav__link">
+    Database Metadata Query
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#table-metadata-query" title="Table Metadata Query" class="md-nav__link">
+    Table Metadata Query
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1166,6 +1220,21 @@ mobile app users, which installed an application on last month split by country.
   <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="nt">&quot;filter&quot;</span><span class="p">:</span>  <span class="err">...</span>
 <span class="p">}</span>
+</pre></div>
+
+
+<h3 id="metadata-queries">Metadata Queries<a class="headerlink" href="#metadata-queries" title="Permanent link">&para;</a></h3>
+<p>There are several endpoints that can be used for retreiving information about database status.</p>
+<h4 id="database-metadata-query">Database Metadata Query<a class="headerlink" href="#database-metadata-query" title="Permanent link">&para;</a></h4>
+<p>The following query returns basic information about the database:</p>
+<div class="codehilite"><pre><span></span>curl http://&lt;viyadb-host&gt;:&lt;viyadb-port&gt;/database/meta
+</pre></div>
+
+
+<h4 id="table-metadata-query">Table Metadata Query<a class="headerlink" href="#table-metadata-query" title="Permanent link">&para;</a></h4>
+<p>To see all available table fields, their types as long as some basic statistics
+use the following query:</p>
+<div class="codehilite"><pre><span></span>curl http://&lt;viyadb-host&gt;:&lt;viyadb-port&gt;/tables/&lt;table name&gt;/meta
 </pre></div>
                 
                   
