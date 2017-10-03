@@ -286,6 +286,7 @@ Save load descriptor into `load.json` file:
   "table": "target_table",
   "format": "tsv",
   "type": "file",
+  "columns": [...],
   "file": "/path/to/data.tsv"
 }
 ```
@@ -299,7 +300,7 @@ curl --data-binary @load.json http://<viyadb-host>:<viyadb-port>/load
 Important notes:
 
  * The `data.tsv` file must be accessible to the ViyaDB instance you're loading the data into.
- * Order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.
+ * If `columns` parameter is not provided, order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.
 
 ## Querying
 
