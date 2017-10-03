@@ -1039,6 +1039,7 @@ mobile app users, which installed an application on last month split by country.
   <span class="nt">&quot;table&quot;</span><span class="p">:</span> <span class="s2">&quot;target_table&quot;</span><span class="p">,</span>
   <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;tsv&quot;</span><span class="p">,</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="err">...</span><span class="p">],</span>
   <span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/data.tsv&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -1052,7 +1053,7 @@ mobile app users, which installed an application on last month split by country.
 <p>Important notes:</p>
 <ul>
 <li>The <code>data.tsv</code> file must be accessible to the ViyaDB instance you're loading the data into.</li>
-<li>Order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.</li>
+<li>If <code>columns</code> parameter is not provided, order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.</li>
 </ul>
 <h2 id="querying">Querying<a class="headerlink" href="#querying" title="Permanent link">&para;</a></h2>
 <p>Supported query types are:</p>
