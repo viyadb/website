@@ -119,21 +119,36 @@ someone decided to sent some random values.
 
 #### Numeric Dimension
 
-This dimension allows to store whole positive numbers as a non-metric column. Description format is:
+This dimension allows to store numbers as a non-metric column. Column description format is
+the following:
 
 ```json
 {
   "name": "<dimension name>",
-  "type": "numeric",
-  "max":  ... 
+  "type": "<type>"
 }
 ```
 
 Parameters:
 
  * name - Column name
- * type - Must be `numeric`.
- * max - Maximum number this column can be (optional, but it's recommended to set)
+ * type - Numeric type (see below)
+
+Supported numeric types are:
+
+ + byte (-128 to 127)
+ + ubyte (0 to 255)
+ + short (-32768 to 32767)
+ + ushort (0 to 65535)
+ + int (-2147483648 to 2147483647)
+ + uint (0 to 4294967295)
+ + long (-9223372036854775808 to 9223372036854775807)
+ + ulong (0 to 18446744073709551615)
+ + double (floating point 64 bit number)
+
+!!! note "Deprecation note"
+    Previously, only `uint` and `ulong` types were supported through `numeric` and `max` specifications.
+    You should upgrade to the new numeric types if you're still using the old way.
 
 #### Boolean Dimension
 
@@ -226,11 +241,15 @@ There are three supported metric types:
 
 Value metric is a numeric value combined with an aggregation function.  List of supported numeric types:
 
- + int
- + uint
- + long
- + ulong
- + double
+ + byte (-128 to 127)
+ + ubyte (0 to 255)
+ + short (-32768 to 32767)
+ + ushort (0 to 65535)
+ + int (-2147483648 to 2147483647)
+ + uint (0 to 4294967295)
+ + long (-9223372036854775808 to 9223372036854775807)
+ + ulong (0 to 18446744073709551615)
+ + double (floating point 64 bit number)
 
 Supported functions:
 
