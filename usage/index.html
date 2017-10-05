@@ -893,11 +893,11 @@ All other events will be accounted still, but they will be marked as <code>__exc
 especially when incoming events are not controlled by yourself, and you don't want your database memory to explode because
 someone decided to sent some random values.</p>
 <h4 id="numeric-dimension">Numeric Dimension<a class="headerlink" href="#numeric-dimension" title="Permanent link">&para;</a></h4>
-<p>This dimension allows to store whole positive numbers as a non-metric column. Description format is:</p>
+<p>This dimension allows to store numbers as a non-metric column. Column description format is
+the following:</p>
 <div class="codehilite"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;dimension name&gt;&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;numeric&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;max&quot;</span><span class="p">:</span>  <span class="err">...</span> 
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;type&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -905,9 +905,25 @@ someone decided to sent some random values.</p>
 <p>Parameters:</p>
 <ul>
 <li>name - Column name</li>
-<li>type - Must be <code>numeric</code>.</li>
-<li>max - Maximum number this column can be (optional, but it's recommended to set)</li>
+<li>type - Numeric type (see below)</li>
 </ul>
+<p>Supported numeric types are:</p>
+<ul>
+<li>byte (-128 to 127)</li>
+<li>ubyte (0 to 255)</li>
+<li>short (-32768 to 32767)</li>
+<li>ushort (0 to 65535)</li>
+<li>int (-2147483648 to 2147483647)</li>
+<li>uint (0 to 4294967295)</li>
+<li>long (-9223372036854775808 to 9223372036854775807)</li>
+<li>ulong (0 to 18446744073709551615)</li>
+<li>double (floating point 64 bit number)</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Deprecation note</p>
+<p>Previously, only <code>uint</code> and <code>ulong</code> types were supported through <code>numeric</code> and <code>max</code> specifications.
+You should upgrade to the new numeric types if you're still using the old way.</p>
+</div>
 <h4 id="boolean-dimension">Boolean Dimension<a class="headerlink" href="#boolean-dimension" title="Permanent link">&para;</a></h4>
 <p>Stores either boolean value of 'true' or 'false'.</p>
 <div class="codehilite"><pre><span></span><span class="p">{</span>
@@ -990,11 +1006,15 @@ someone decided to sent some random values.</p>
 <h4 id="value-metric">Value Metric<a class="headerlink" href="#value-metric" title="Permanent link">&para;</a></h4>
 <p>Value metric is a numeric value combined with an aggregation function.  List of supported numeric types:</p>
 <ul>
-<li>int</li>
-<li>uint</li>
-<li>long</li>
-<li>ulong</li>
-<li>double</li>
+<li>byte (-128 to 127)</li>
+<li>ubyte (0 to 255)</li>
+<li>short (-32768 to 32767)</li>
+<li>ushort (0 to 65535)</li>
+<li>int (-2147483648 to 2147483647)</li>
+<li>uint (0 to 4294967295)</li>
+<li>long (-9223372036854775808 to 9223372036854775807)</li>
+<li>ulong (0 to 18446744073709551615)</li>
+<li>double (floating point 64 bit number)</li>
 </ul>
 <p>Supported functions:</p>
 <ul>

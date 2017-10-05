@@ -119,9 +119,9 @@ Every database entry consists of two sets:
 # Dimension Types
 
 - String
+- Number
 - Time
 - Microtime
-- Integral number
 
 ---
 
@@ -177,7 +177,7 @@ This is a definition of table that holds HTTP access log entries, and counts the
     {"name": "time", "type": "time"},
     {"name": "method", "cardinality": 5},
     {"name": "path"},
-    {"name": "status", "type": "numeric", "max": 600}
+    {"name": "status", "type": "ushort"}
   ],
   "metrics": [
     {"name": "count", "type": "count"}
