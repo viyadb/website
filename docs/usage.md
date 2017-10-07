@@ -144,6 +144,7 @@ Supported numeric types are:
  + uint (0 to 4294967295)
  + long (-9223372036854775808 to 9223372036854775807)
  + ulong (0 to 18446744073709551615)
+ + float (floating point 32 bit number)
  + double (floating point 64 bit number)
 
 !!! note "Deprecation note"
@@ -249,6 +250,7 @@ Value metric is a numeric value combined with an aggregation function.  List of 
  + uint (0 to 4294967295)
  + long (-9223372036854775808 to 9223372036854775807)
  + ulong (0 to 18446744073709551615)
+ + float (floating point 32 bit number)
  + double (floating point 64 bit number)
 
 Supported functions:
