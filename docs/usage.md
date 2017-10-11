@@ -258,6 +258,7 @@ Supported functions:
  + sum
  + max
  + min
+ + avg
 
 The format of defining a value metric is the following:
 
