@@ -94,6 +94,7 @@ Description format is as follows:
 ```json
 {
   "name": "<dimension name>",
+  "field": "<input field name>",
   "type": "string",
   "length": ... ,
   "cardinality": ... ,
@@ -107,6 +108,7 @@ Description format is as follows:
 Parameters:
 
  * name - Column name
+ * field - Use alternative input field name (defaults to the column name itself)
  * type - Must be `string` (or can be omitted, since it's default)
  * length - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).
  * cardinality - Number of distinct values this column holds (optional, but it's recommended to set)
@@ -125,6 +127,7 @@ the following:
 ```json
 {
   "name": "<dimension name>",
+  "field": "<input field name>",
   "type": "<type>"
 }
 ```
@@ -132,6 +135,7 @@ the following:
 Parameters:
 
  * name - Column name
+ * field - Input field name, which allows to create different metrics based on a single field (defaults to metric name itself)
  * type - Numeric type (see below)
 
 Supported numeric types are:
@@ -323,6 +327,7 @@ Important notes:
 
  * The `data.tsv` file must be accessible to the ViyaDB instance you're loading the data into.
  * If `columns` parameter is not provided, order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.
+ * `columns` parameter must be used whenever one of table column defines `field` attribute.
 
 ## Querying
 
