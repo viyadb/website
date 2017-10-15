@@ -869,6 +869,7 @@ SELECT app_id, SUM(revenue) FROM events GROUP BY app_id</code></p>
 Description format is as follows:</p>
 <div class="codehilite"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;dimension name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;input field name&gt;&quot;</span><span class="p">,</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
   <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="err">...</span> <span class="p">,</span>
   <span class="nt">&quot;cardinality&quot;</span><span class="p">:</span> <span class="err">...</span> <span class="p">,</span>
@@ -883,6 +884,7 @@ Description format is as follows:</p>
 <p>Parameters:</p>
 <ul>
 <li>name - Column name</li>
+<li>field - Use alternative input field name (defaults to the column name itself)</li>
 <li>type - Must be <code>string</code> (or can be omitted, since it's default)</li>
 <li>length - Optionally, specify maximum length for a column value (values exceeding this limit will be stripped).</li>
 <li>cardinality - Number of distinct values this column holds (optional, but it's recommended to set)</li>
@@ -897,6 +899,7 @@ someone decided to sent some random values.</p>
 the following:</p>
 <div class="codehilite"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;dimension name&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;input field name&gt;&quot;</span><span class="p">,</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;type&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -905,6 +908,7 @@ the following:</p>
 <p>Parameters:</p>
 <ul>
 <li>name - Column name</li>
+<li>field - Input field name, which allows to create different metrics based on a single field (defaults to metric name itself)</li>
 <li>type - Numeric type (see below)</li>
 </ul>
 <p>Supported numeric types are:</p>
@@ -1077,6 +1081,7 @@ mobile app users, which installed an application on last month split by country.
 <ul>
 <li>The <code>data.tsv</code> file must be accessible to the ViyaDB instance you're loading the data into.</li>
 <li>If <code>columns</code> parameter is not provided, order of columns in .tsv file must be as follows: first dimensions, then metrics as they appear in the table descriptor.</li>
+<li><code>columns</code> parameter must be used whenever one of table column defines <code>field</code> attribute.</li>
 </ul>
 <h2 id="querying">Querying<a class="headerlink" href="#querying" title="Permanent link">&para;</a></h2>
 <p>Supported query types are:</p>
