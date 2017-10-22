@@ -38,57 +38,28 @@ Create `table.json` file containing:
 {
   "name": "activity",
   "dimensions": [
-    {"name": "app_id", "cardinality": 20000},
-    {"name": "install_date", "type": "time"},
-    {"name": "install_country", "cardinality": 200},
-    {"name": "install_currency", "cardinality": 200},
+    {"name": "app_id"},
+    {"name": "user_id"},
+    {
+      "name": "event_time", "type": "time",
+      "format": "millis", "granularity": "day"
+    },
+    {"name": "country"},
+    {"name": "city"},
+    {"name": "device_type"},
+    {"name": "device_vendor"},
     {"name": "ad_network"},
-    {
-      "name": "campaign",
-      "cardinality_guard": {
-        "dimensions": ["app_id", "install_date", "ad_network"],
-        "limit": 300
-      }
-    },
-    {
-      "name": "campaign_id",
-      "cardinality_guard": {
-        "dimensions": ["app_id", "install_date", "ad_network"],
-        "limit": 300
-      }
-    },
-    {
-      "name": "site_id",
-      "cardinality_guard": {
-        "dimensions": ["app_id", "install_date", "ad_network"],
-        "limit": 3000
-      }
-    },
-    {"name": "adset"},
-    {"name": "adset_id"},
-    {"name": "adgroup"},
-    {"name": "adgroup_id"},
-    {"name": "event_country", "cardinality": 200},
-    {"name": "event_currency", "cardinality": 200},
-    {
-      "name": "event_name",
-      "cardinality_guard": {
-        "dimensions": ["app_id", "install_date"],
-        "limit": 300
-      }
-    }
+    {"name": "campaign"},
+    {"name": "site_id"},
+    {"name": "event_type"},
+    {"name": "event_name"},
+    {"name": "organic", "cardinality": 2},
+    {"name": "days_from_install", "type": "ushort"}
   ],
   "metrics": [
-    {"name": "install_cost", "type": "double_sum"},
-    {"name": "install_cost_alt", "type": "double_sum"},
-    {"name": "revenue", "type": "double_sum"},
-    {"name": "revenue_alt", "type": "double_sum"},
-    {"name": "clicks_count", "type": "int_sum"},
-    {"name": "impressions_count", "type": "int_sum"},
-    {"name": "installs_count", "type": "int_sum"},
-    {"name": "launches_count", "type": "int_sum"},
-    {"name": "inapps_count", "type": "int_sum"},
-    {"name": "uninstalls_count", "type": "int_sum"}
+    {"name": "revenue" , "type": "double_sum"},
+    {"name": "users", "type": "bitset", "field": "user_id"},
+    {"name": "count" , "type": "count"}
   ]
 }
 ```
@@ -101,15 +72,12 @@ curl -d @table.json http://localhost:5000/tables
 
 ### Generating Sample Data
 
-Generating sample data requires Python 2.7 and [Faker](https://faker.readthedocs.io/en/master/) module installed on your computer.
-
-To generate 10M user activity events, run the following:
+To generate 100M user activity events, run the following:
 
 ```bash
-wget -q https://github.com/viyadb/viyadb-samples/archive/master.zip
-unzip master.zip
-viyadb-samples-master/activity/
-./generate.py -d -n 10000 > /tmp/viyadb/data.tsv
+mkdir /tmp/viyadb
+docker run --log-driver=none --rm -ti -e EVENTS_NUMBER=10000000 \
+  -e OUTPUT_FORMAT=tsv viyadb/events-generator:latest > /tmp/viyadb/data.tsv
 ```
 
 This might take several minutes.
@@ -123,6 +91,12 @@ Create load descriptor as follows:
   "table": "activity",
   "format": "tsv",
   "type": "file",
+  "columns": [
+    "app_id", "user_id", "event_time", "country", "city",
+    "device_type", "device_vendor", "ad_network", "campaign",
+    "site_id", "event_type", "event_name", "organic",
+    "days_from_install", "revenue"
+  ],
   "file": "/tmp/viyadb/data.tsv"
 }
 ```
@@ -135,27 +109,24 @@ curl -d @load.json http://localhost:5000/load
 
 ### Querying
 
-The following query aggregates by install date, ad network and country (at the moment of application install),
-and gives insights about revenue that mobile users brought during one month in USA and in Canada.
-This helps understand what ad network was more effective in terms of payout by purchases in mobile app.
+The following query finds top 10 applications by organic installs count:
 
 ```json
 {
   "type": "aggregate",
   "table": "activity",
   "select": [
-    {"column": "install_date"},
-    {"column": "ad_network"},
-    {"column": "install_country"},
-    {"column": "installs_count"},
-    {"column": "revenue"}
+    {"column": "app_id"},
+    {"column": "count"}
   ],
   "filter": {"op": "and", "filters": [
-    {"op": "eq", "column": "app_id", "value": "com.teslacoilsw.notifier"},
-    {"op": "ge", "column": "install_date", "value": "2015-03-01"},
-    {"op": "lt", "column": "install_date", "value": "2015-03-30"},
-    {"op": "in", "column": "install_country", "values": ["US", "CA"]}
-  ]}
+    {"op": "ge", "column": "event_time", "value": "2015-01-01"},
+    {"op": "le", "column": "event_time", "value": "2015-01-30"},
+    {"op": "eq", "column": "event_type", "value": "install"},
+    {"op": "eq", "column": "organic", "value": "True"}
+  ]},
+  "sort": [{"column": "count"}],
+  "limit": 10
 }
 ```
 
@@ -164,4 +135,6 @@ Save the query in file `query.json`, and run:
 ```bash
 curl -d @query.json http://localhost:5000/query
 ```
+
+For more example on this dataset please refer to the Blog post [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzing-mobile-users-activity-with-viyadb-c88a02104269)
 

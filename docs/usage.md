@@ -356,6 +356,7 @@ Query format:
   "table": "<table name>",
   "select": [ ... ],
   "filter":  ... ,
+  "having": ...,
   "sort": [ ... ] ,
   "skip": 0,
   "limit": 0
@@ -366,7 +367,8 @@ Parameters:
 
  * table - Table name
  * select - List of parameters describing how to select a column (see below)
- * filter - Fitler description (see below)
+ * filter - Filter description (see below)
+ * having - Post-aggregation filter description (similar to SQL HAVING clause). The format is the same as in `filter` attribute.
  * sort - Optional result sorting configuration (see below)
  * skip - Optionally, skip this number of output records
  * limit - Optionally, limit result set size to this number
@@ -487,7 +489,8 @@ Below is an example of using different filter types:
     {"op": "ge", "column": "install_date", "value": "2015-01-01"},
     {"op": "lt", "column": "install_date", "value": "2015-01-30"},
     {"op": "in", "column": "install_country", "values": ["US", "IL", "RU"]}
-  ]}
+  ]},
+  "having": {"op": "gt", "column": "inapps_count", "value": "10"}
 }
 ```
 
