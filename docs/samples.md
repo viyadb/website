@@ -136,5 +136,17 @@ Save the query in file `query.json`, and run:
 curl -d @query.json http://localhost:5000/query
 ```
 
-For more example on this dataset please refer to the Blog post [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzing-mobile-users-activity-with-viyadb-c88a02104269)
+The query can be invoked using experimental SQL support. To enter SQL interpreter shell, please run:
+
+```bash
+docker exec -ti $(docker ps | grep viyadb/viyadb:latest | awk '{print $1}') /opt/viyadb/bin/vsql
+```
+
+Running the query:
+
+```sql
+SELECT app_id, count FROM activity WHERE event_time >= '2015-01-01' AND event_time <= '2015-01-30' AND event_type='install' AND organic='True' ORDER BY count DESC LIMIT 10
+```
+
+For more example on this dataset please refer to the Blog post [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzC
 
