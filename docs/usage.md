@@ -135,7 +135,7 @@ the following:
 Parameters:
 
  * name - Column name
- * field - Input field name, which allows to create different metrics based on a single field (defaults to metric name itself)
+ * field - Use alternative input field name (defaults to the column name itself)
  * type - Numeric type (see below)
 
 Supported numeric types are:
@@ -162,6 +162,7 @@ Stores either boolean value of 'true' or 'false'.
 ```json
 {
   "name": "<dimension name>",
+  "field": "<input field name>",
   "type": "boolean"
 }
 ```
@@ -169,6 +170,7 @@ Stores either boolean value of 'true' or 'false'.
 Parameters:
 
  * name - Column name
+ * field - Use alternative input field name (defaults to the column name itself)
  * type - Must be `boolean`.
 
 #### Time and Microtime Dimensions
@@ -179,6 +181,7 @@ This dimension allows to store UTC time. The difference between the two is that 
 ```json
 {
   "name": "<dimension name>",
+  "field": "<input field name>",
   "type": "time|microtime",
   "format":  ... ,
   "granularity": "<time unit>",
@@ -189,6 +192,7 @@ This dimension allows to store UTC time. The difference between the two is that 
 Parameters:
 
  * name - Column name
+ * field - Use alternative input field name (defaults to the column name itself)
  * type - The type is set according to the required precision
  * format - See below
  * granularity - When specified, this time granularity will be used for rolling up events during data ingestion
@@ -269,6 +273,7 @@ The format of defining a value metric is the following:
 ```json
 {
   "name": "<metric name>",
+  "field": "<input field name>",
   "type": "<value_type>_<function>"
 }
 ```
@@ -280,6 +285,7 @@ This type of metric just counts number of incoming rows. To define it, use the f
 ```json
 {
   "name": "<metric name>",
+  "field": "<input field name>",
   "type": "count"
 }
 ```
@@ -297,6 +303,7 @@ Metric format:
 ```json
 {
   "name": "<metric name>",
+  "field": "<input field name>",
   "type": "bitset"
 }
 ```
