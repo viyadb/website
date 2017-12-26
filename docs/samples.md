@@ -9,7 +9,8 @@ It's recommended to use Docker image of ViyaDB for running the samples.
 To launch Docker container with latest ViyaDB version, run:
 
 ```bash
-docker run -p 5000:5000 --rm -ti -v /tmp/viyadb:/tmp/viyadb viyadb/viyadb:latest
+docker run -p 5000:5000 --rm -ti \
+  -v /tmp/viyadb:/tmp/viyadb viyadb/viyadb:latest
 ```
 
 ## Mobile Attribution Tracking
@@ -139,14 +140,27 @@ curl -d @query.json http://localhost:5000/query
 The query can be invoked using experimental SQL support. To enter SQL interpreter shell, please run:
 
 ```bash
-docker exec -ti $(docker ps | grep viyadb/viyadb:latest | awk '{print $1}') /opt/viyadb/bin/vsql
+docker exec -ti \
+  $(docker ps | grep viyadb/viyadb:latest | awk '{print $1}') \
+  /opt/viyadb/bin/vsql
 ```
 
 Running the query:
 
 ```sql
-SELECT app_id, count FROM activity WHERE event_time >= '2015-01-01' AND event_time <= '2015-01-30' AND event_type='install' AND organic='True' ORDER BY count DESC LIMIT 10
+SELECT
+  app_id, count
+FROM
+  activity
+WHERE
+  event_time >= '2015-01-01' AND
+  event_time <= '2015-01-30' AND
+  event_type='install' AND
+  organic='True'
+ORDER BY
+  count DESC
+LIMIT 10
 ```
 
-For more example on this dataset please refer to the Blog post [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzC
+For more example on this dataset please refer to the Blog post: [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzing-mobile-users-activity-with-viyadb-c88a02104269).
 
