@@ -18,8 +18,8 @@ gather insights off of hundreds of thousands of events per second in real-time.
 
 ### Consul
 
-Consul is irreplaceable part in any distributed application, where different components need
-agree on something. In our case, Consul will be used for two things:
+Consul or technologies alike are irreplaceable in any distributed application, where different
+components need agree on something. In our case, Consul will be used for two things:
 
  * Central configuration storage
  * Coordination of ViyaDB cluster nodes
@@ -258,11 +258,70 @@ docker run --rm -ti \
 
 ## Querying
 
-Once all components are started and running, we can use simple SQL shell for running queries.
-Start the shell, and give it a hostname of one of ViyaDB cluster nodes:
+Once all components are started and running, we can start sending some queries.
+
+Multiple options to query ViyaDB exist, such as [REST API](usage.md#querying)
+or [Zeppelin](https://github.com/viyadb/zeppelin-interpreter) interpreter,
+but we'll just use SQL shell for this test.
+
+Start the shell, and provide it with a hostname of one of ViyaDB cluster nodes,
+and a controller port number:
 
 ```bash
 docker run --rm -ti viyadb/viyadb:latest \
   /opt/viyadb/bin/vsql viyadb-host 5555
 ```
+
+### Top 10 cities by distinct users count
+
+```bash
+ViyaDB> SELECT city, users FROM events WHERE app_id='kik.android' and city <> '' ORDER BY users DESC LIMIT 10;
+city               users
+Kowloon            76
+Tsuen Wan          74
+Yuen Long Kau Hui  70
+Hong Kong          67
+Azur               9
+Qiryat Ono         9
+Tayibe             9
+Ganne Tiqwa        8
+Sederot            7
+Abu Ghosh          7
+```
+
+### User retention query
+
+```bash
+ViyaDB> SELECT ad_network, days_from_install, users FROM events WHERE app_id='kik.android' AND event_time BETWEEN '2015-01-01' AND '2015-01-31' AND event_type='session' AND ad_network IN('Facebook', 'Google', 'Twitter') ORDER BY days_from_install;
+ad_network  days_from_install  users
+Twitter     0                  573
+Google      0                  623
+Facebook    0                  595
+Google      1                  427
+Facebook    1                  410
+Twitter     1                  398
+Twitter     2                  263
+Google      2                  250
+Facebook    2                  253
+Twitter     3                  112
+Facebook    3                  105
+Google      3                  106
+Twitter     4                  9
+Facebook    4                  8
+Google      4                  12
+```
+
+## Next steps
+
+This is just the beginning, and most functionality like cluster management and monitoring is still missing.
+However, there are two basic things that have very high priority.
+
+First, clustering key (`app_id` in our case) must always present in a query filter, otherwise it's impossible
+to know what worker is responsible for serving the query. Currently, there's an additional restriction,
+which says that evaluation of a query filter must result in a single target worker. To remove this
+restriction, there must be a component that's capable of sending queries to multiple workers and
+aggregating their results into one final result. This is something that will be implemented very soon.
+
+The second most requested feature are cluster control and status queries. This part should be easy
+to implement.
 

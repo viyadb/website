@@ -20,6 +20,8 @@ extra:
       link: 'https://twitter.com/viyadb'
     - type: 'linkedin'
       link: 'https://www.linkedin.com/company/18228559'
+    - type: 'google'
+      link: 'https://groups.google.com/forum/#!forum/viyadb'
     - type: 'envelope'
       link: 'mailto:michael@viyadb.com'
   palette:
