@@ -402,7 +402,8 @@
 <h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
 <p>It's recommended to use Docker image of ViyaDB for running the samples.
 To launch Docker container with latest ViyaDB version, run:</p>
-<div class="codehilite"><pre><span></span>docker run -p <span class="m">5000</span>:5000 --rm -ti -v /tmp/viyadb:/tmp/viyadb viyadb/viyadb:latest
+<div class="codehilite"><pre><span></span>docker run -p <span class="m">5000</span>:5000 --rm -ti <span class="se">\</span>
+  -v /tmp/viyadb:/tmp/viyadb viyadb/viyadb:latest
 </pre></div>
 
 
@@ -516,16 +517,29 @@ docker run --log-driver<span class="o">=</span>none --rm -ti -e <span class="nv"
 
 
 <p>The query can be invoked using experimental SQL support. To enter SQL interpreter shell, please run:</p>
-<div class="codehilite"><pre><span></span>docker <span class="nb">exec</span> -ti <span class="k">$(</span>docker ps <span class="p">|</span> grep viyadb/viyadb:latest <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span> /opt/viyadb/bin/vsql
+<div class="codehilite"><pre><span></span>docker <span class="nb">exec</span> -ti <span class="se">\</span>
+  <span class="k">$(</span>docker ps <span class="p">|</span> grep viyadb/viyadb:latest <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span> <span class="se">\</span>
+  /opt/viyadb/bin/vsql
 </pre></div>
 
 
 <p>Running the query:</p>
-<div class="codehilite"><pre><span></span><span class="k">SELECT</span> <span class="n">app_id</span><span class="p">,</span> <span class="k">count</span> <span class="k">FROM</span> <span class="n">activity</span> <span class="k">WHERE</span> <span class="n">event_time</span> <span class="o">&gt;=</span> <span class="s1">&#39;2015-01-01&#39;</span> <span class="k">AND</span> <span class="n">event_time</span> <span class="o">&lt;=</span> <span class="s1">&#39;2015-01-30&#39;</span> <span class="k">AND</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;install&#39;</span> <span class="k">AND</span> <span class="n">organic</span><span class="o">=</span><span class="s1">&#39;True&#39;</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span> <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">10</span>
+<div class="codehilite"><pre><span></span><span class="k">SELECT</span>
+  <span class="n">app_id</span><span class="p">,</span> <span class="k">count</span>
+<span class="k">FROM</span>
+  <span class="n">activity</span>
+<span class="k">WHERE</span>
+  <span class="n">event_time</span> <span class="o">&gt;=</span> <span class="s1">&#39;2015-01-01&#39;</span> <span class="k">AND</span>
+  <span class="n">event_time</span> <span class="o">&lt;=</span> <span class="s1">&#39;2015-01-30&#39;</span> <span class="k">AND</span>
+  <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;install&#39;</span> <span class="k">AND</span>
+  <span class="n">organic</span><span class="o">=</span><span class="s1">&#39;True&#39;</span>
+<span class="k">ORDER</span> <span class="k">BY</span>
+  <span class="k">count</span> <span class="k">DESC</span>
+<span class="k">LIMIT</span> <span class="mi">10</span>
 </pre></div>
 
 
-<p>For more example on this dataset please refer to the Blog post [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzC</p>
+<p>For more example on this dataset please refer to the Blog post: <a href="https://medium.com/viyadb/analyzing-mobile-users-activity-with-viyadb-c88a02104269">Analyzing Mobile Users Activity with ViyaDB</a>.</p>
                 
                   
                 
@@ -597,6 +611,8 @@ docker run --log-driver<span class="o">=</span>none --rm -ti -e <span class="nv"
       <a href="https://twitter.com/viyadb" class="md-footer-social__link fa fa-twitter"></a>
     
       <a href="https://www.linkedin.com/company/18228559" class="md-footer-social__link fa fa-linkedin"></a>
+    
+      <a href="https://groups.google.com/forum/#!forum/viyadb" class="md-footer-social__link fa fa-google"></a>
     
       <a href="mailto:michael@viyadb.com" class="md-footer-social__link fa fa-envelope"></a>
     
