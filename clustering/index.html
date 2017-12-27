@@ -616,7 +616,7 @@
                 
                 
                 <h1 id="clustering">Clustering<a class="headerlink" href="#clustering" title="Permanent link">&para;</a></h1>
-<p>ViyaDB implements shared nothing articecture, which means that workers hold partitions
+<p>ViyaDB implements shared nothing architecture, which means that workers hold partitions
 of data independently from each other. This allows for many possible implementations of
 clustering depending on business requirements and/or restrictions you might have.</p>
 <p>Below is one of possible implementations of clustered ViyaDB environment.</p>
@@ -780,7 +780,8 @@ the data from.</p>
 
 
 <p>Currently, the number of expected workers must be set explicitly in cluster configuration.
-This is the total number of nodes multiplied by the number of CPU cores on each machine.</p>
+This is the total number of nodes multiplied by the number of CPU cores on each machine.
+Using this configuration, two copies of a single partition will be placed on two different workers.</p>
 <p>To load this configuration into Consul, store this JSON in file <code>cluster.json</code>, and run:</p>
 <div class="codehilite"><pre><span></span>curl --request PUT --data @cluster.json <span class="se">\</span>
   http://&lt;consul-host&gt;:8500/v1/kv/viyadb/clusters/cluster001/config
