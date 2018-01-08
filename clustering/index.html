@@ -667,11 +667,8 @@ of the project.</p>
 <p>This is the database cluster itself. Every physical node of the cluster consists of supervisor process,
 which spawns worker processes by the number of available CPU. Node controller running on every node
 deals with loading data into worker processes. In addition, controller also redirects database queries to 
-a worker node containing required data partition, based on query filter.</p>
-<div class="admonition note">
-<p class="admonition-title">Aggregating data from different partitions</p>
-<p>The work on "aggregator" component capable of aggregating data from different workers is still in progress.</p>
-</div>
+a worker node containing required data partition, based on query filter (or queries needed workers,
+and aggregates results).</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
 <h3 id="table-configuration">Table configuration<a class="headerlink" href="#table-configuration" title="Permanent link">&para;</a></h3>
 <p>This configuration defines database table structure, what event fields represent dimensions,
@@ -887,15 +884,7 @@ Google      <span class="m">4</span>                  <span class="m">12</span>
 
 
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
-<p>This is just the beginning, and most functionality like cluster management and monitoring is still missing.
-However, there are two basic things that have very high priority.</p>
-<p>First, clustering key (<code>app_id</code> in our case) must always present in a query filter, otherwise it's impossible
-to know what worker is responsible for serving the query. Currently, there's an additional restriction,
-which says that evaluation of a query filter must result in a single target worker. To remove this
-restriction, there must be a component that's capable of sending queries to multiple workers and
-aggregating their results into one final result. This is something that will be implemented very soon.</p>
-<p>The second most requested feature are cluster control and status queries. This part should be easy
-to implement.</p>
+<p>This is just the beginning, and most functionality like cluster management and monitoring is still missing.</p>
                 
                   
                 
