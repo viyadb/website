@@ -9,6 +9,8 @@ Interaction with ViyaDB instance is performed using REST API. Sometimes, it does
 
 ## Configuring DB Instance
 
+This section explains how to configure single instance of ViyaDB. This is not needed when running in a [clustered](clustering.md) environment.
+
 Store descriptor preresents a configuration file of a single ViyaDB instance. The format is the following:
 
 ```json
@@ -118,6 +120,11 @@ of other dimensions. For example, we can decide to store at most 200 distinct ev
 All other events will be accounted still, but they will be marked as `__exceeded`. This is really important option,
 especially when incoming events are not controlled by yourself, and you don't want your database memory to explode because
 someone decided to sent some random values.
+
+!!! note "Cardinality protection"
+    Cardinality protection is built into ViyaDB, which basically means that you can (and should) define the maximum number of distinct elements of any given dimension. This not only allows for filtering out irrelevant values (while still keeping record of their metrics as "Other"), but also makes possible doing optimizations that improve database performance and save memory.
+
+    Dimension cardinality can be applied either on a dimension independently or based on a set of other dimensions. For instance, you can disallow more than 100 different event names coming from a single mobile application per single day.
 
 #### Numeric Dimension
 
@@ -350,6 +357,9 @@ curl --data-binary @query.json http://<viyadb-host>:<viyadb-port>/query
 ```
 
 Read further to learn more on different query types.
+
+!!! note "Query compilation"
+    The first time a query is introduced to ViyaDB, a highly optimized C++ source code is generated, and the compiled version of this code is used for physical data access. That allows to minimize branch mis-predictions, increase the level of CPU cache locality, etc. That means that the first execution of a new query type will take some extra time needed for compiling it, all the subsequent queries of the same type will use already compiled version.
     
 ### Aggregate Query
 
