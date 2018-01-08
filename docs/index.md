@@ -9,8 +9,7 @@ ViyaDB is in-memory columnar analytical data store, featuring:
 - Real-time query compilation to machine code
 - Dynamic period based rollup
 - REST API interface with intuitive JSON-based language
-
-Introduction slides are available [here](/slides/intro.html).
+- Basic SQL (DML) support
 
 ## Use cases
 
