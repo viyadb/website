@@ -69,10 +69,8 @@ of the project.
 This is the database cluster itself. Every physical node of the cluster consists of supervisor process,
 which spawns worker processes by the number of available CPU. Node controller running on every node
 deals with loading data into worker processes. In addition, controller also redirects database queries to 
-a worker node containing required data partition, based on query filter.
-
-!!! note "Aggregating data from different partitions"
-    The work on "aggregator" component capable of aggregating data from different workers is still in progress.
+a worker node containing required data partition, based on query filter (or queries needed workers,
+and aggregates results).
 
 ## Configuration
 
@@ -315,14 +313,4 @@ Google      4                  12
 ## Next steps
 
 This is just the beginning, and most functionality like cluster management and monitoring is still missing.
-However, there are two basic things that have very high priority.
-
-First, clustering key (`app_id` in our case) must always present in a query filter, otherwise it's impossible
-to know what worker is responsible for serving the query. Currently, there's an additional restriction,
-which says that evaluation of a query filter must result in a single target worker. To remove this
-restriction, there must be a component that's capable of sending queries to multiple workers and
-aggregating their results into one final result. This is something that will be implemented very soon.
-
-The second most requested feature are cluster control and status queries. This part should be easy
-to implement.
 
