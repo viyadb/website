@@ -310,7 +310,8 @@ Facebook    4                  8
 Google      4                  12
 ```
 
-## Next steps
+## Work in progress
 
-This is just the beginning, and most functionality like cluster management and monitoring is still missing.
+This is just the beginning, and most functionality like cluster management and monitoring is still missing,
+but we're working on it.
 
