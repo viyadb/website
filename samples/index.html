@@ -195,8 +195,8 @@
 
 
   <li class="md-nav__item">
-    <a href=".." title="Home" class="md-nav__link">
-      Home
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
     </a>
   </li>
 
@@ -314,6 +314,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../realtime/" title="Realtime" class="md-nav__link">
+      Realtime
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -398,7 +410,8 @@
                 
                 
                 <h1 id="samples">Samples<a class="headerlink" href="#samples" title="Permanent link">&para;</a></h1>
-<p>The following section contains several examples that cover most of the ViyaDB features.</p>
+<p>The following section contains several examples that cover most of the ViyaDB features using
+single database instance.</p>
 <h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
 <p>It's recommended to use Docker image of ViyaDB for running the samples.
 To launch Docker container with latest ViyaDB version, run:</p>
@@ -523,7 +536,7 @@ docker run --log-driver<span class="o">=</span>none --rm -ti -e <span class="nv"
 </pre></div>
 
 
-<p>Running the query:</p>
+<p>Our previous query translates into SQL as follows:</p>
 <div class="codehilite"><pre><span></span><span class="k">SELECT</span>
   <span class="n">app_id</span><span class="p">,</span> <span class="k">count</span>
 <span class="k">FROM</span>
@@ -536,6 +549,26 @@ docker run --log-driver<span class="o">=</span>none --rm -ti -e <span class="nv"
 <span class="k">ORDER</span> <span class="k">BY</span>
   <span class="k">count</span> <span class="k">DESC</span>
 <span class="k">LIMIT</span> <span class="mi">10</span>
+</pre></div>
+
+
+<p>Let's run the query:</p>
+<div class="codehilite"><pre><span></span>ViyaDB&gt; SELECT app_id, count FROM activity WHERE event_time &gt;<span class="o">=</span> <span class="s1">&#39;2015-01-01&#39;</span> AND event_time &lt;<span class="o">=</span> <span class="s1">&#39;2015-01-30&#39;</span> AND <span class="nv">event_type</span><span class="o">=</span><span class="s1">&#39;install&#39;</span> AND <span class="nv">organic</span><span class="o">=</span><span class="s1">&#39;True&#39;</span> ORDER BY count DESC LIMIT <span class="m">10</span>
+
+app_id                                 count
+------                                 -----
+com.skype.raider                       <span class="m">282</span>
+com.facebook.orca                      <span class="m">42</span>
+net.cleverbit.VegeFruits               <span class="m">41</span>
+com.virgil.basketball                  <span class="m">27</span>
+com.abzorbagames.poker                 <span class="m">21</span>
+air.nn.mobile.app.main                 <span class="m">18</span>
+com.squareup                           <span class="m">17</span>
+freemoviesapp.com                      <span class="m">16</span>
+com.ea.spymouse_row                    <span class="m">14</span>
+com.bandainamcoent.tamagothiclassicus  <span class="m">14</span>
+
+Time taken: <span class="m">0</span>.004841 secs
 </pre></div>
 
 
