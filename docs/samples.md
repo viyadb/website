@@ -1,7 +1,8 @@
 Samples
 ========
 
-The following section contains several examples that cover most of the ViyaDB features.
+The following section contains several examples that cover most of the ViyaDB features using
+single database instance.
 
 ## Running
 
@@ -145,7 +146,7 @@ docker exec -ti \
   /opt/viyadb/bin/vsql
 ```
 
-Running the query:
+Our previous query translates into SQL as follows:
 
 ```sql
 SELECT
@@ -160,6 +161,27 @@ WHERE
 ORDER BY
   count DESC
 LIMIT 10
+```
+
+Let's run the query:
+
+```bash
+ViyaDB> SELECT app_id, count FROM activity WHERE event_time >= '2015-01-01' AND event_time <= '2015-01-30' AND event_type='install' AND organic='True' ORDER BY count DESC LIMIT 10
+
+app_id                                 count
+------                                 -----
+com.skype.raider                       282
+com.facebook.orca                      42
+net.cleverbit.VegeFruits               41
+com.virgil.basketball                  27
+com.abzorbagames.poker                 21
+air.nn.mobile.app.main                 18
+com.squareup                           17
+freemoviesapp.com                      16
+com.ea.spymouse_row                    14
+com.bandainamcoent.tamagothiclassicus  14
+
+Time taken: 0.004841 secs
 ```
 
 For more example on this dataset please refer to the Blog post: [Analyzing Mobile Users Activity with ViyaDB](https://medium.com/viyadb/analyzing-mobile-users-activity-with-viyadb-c88a02104269).

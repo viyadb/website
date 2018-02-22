@@ -7,10 +7,11 @@ google_analytics:
   - 'UA-23508932-8'
   - 'auto'
 pages:
-  - index.md
+  - Overview: index.md
   - usage.md
   - samples.md
   - clustering.md
+  - realtime.md
 extra:
   logo: 'img/logo.svg'
   social:
