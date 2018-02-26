@@ -299,6 +299,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#running" title="Running" class="md-nav__link">
+    Running
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#consul-configuration" title="Consul configuration" class="md-nav__link">
+    Consul configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viyadb-nodes" title="ViyaDB nodes" class="md-nav__link">
+    ViyaDB nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-data" title="Loading data" class="md-nav__link">
+    Loading data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querying" title="Querying" class="md-nav__link">
+    Querying
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#real-time-data-processing" title="Real-Time Data Processing" class="md-nav__link">
     Real-Time Data Processing
   </a>
@@ -388,6 +429,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#running" title="Running" class="md-nav__link">
+    Running
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#consul-configuration" title="Consul configuration" class="md-nav__link">
+    Consul configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viyadb-nodes" title="ViyaDB nodes" class="md-nav__link">
+    ViyaDB nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loading-data" title="Loading data" class="md-nav__link">
+    Loading data
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#querying" title="Querying" class="md-nav__link">
+    Querying
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#real-time-data-processing" title="Real-Time Data Processing" class="md-nav__link">
     Real-Time Data Processing
   </a>
@@ -445,6 +527,192 @@ between database nodes using Consul. One of cluster controllers becomes a leader
 a query will be sent to workers containing required data partitions, then the result
 will be combined and returned back to a user.</p>
 <p>Communication with workers is performed using HTTP API.</p>
+<h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
+<p>Let's run a cluster of ViyaDB nodes, and load 1 billion of user events into it.</p>
+<h3 id="consul-configuration">Consul configuration<a class="headerlink" href="#consul-configuration" title="Permanent link">&para;</a></h3>
+<p>First, you must have <a href="https://www.consul.io">Consul</a> installed somewhere.</p>
+<p>Create the following two keys in Consul, which represent ViyaDB cluster configuration:</p>
+<p><em>viyadb/clusters/cluster001/config</em></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;replication_factor&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+  <span class="nt">&quot;tables&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;events&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><em>viyadb/tables/events/config</em></p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;events&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;app_id&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;uint&quot;</span><span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;event_time&quot;</span><span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;time&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;millis&quot;</span><span class="p">,</span> <span class="nt">&quot;granularity&quot;</span><span class="p">:</span> <span class="s2">&quot;day&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;country&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;city&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;device_type&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;device_vendor&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ad_network&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;campaign&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;site_id&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;event_type&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;event_name&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;organic&quot;</span><span class="p">,</span> <span class="nt">&quot;cardinality&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;days_from_install&quot;</span><span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;ushort&quot;</span><span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;metrics&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;revenue&quot;</span> <span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;double_sum&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;users&quot;</span><span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;bitset&quot;</span><span class="p">,</span> <span class="nt">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">,</span> <span class="nt">&quot;max&quot;</span><span class="p">:</span> <span class="mi">4294967295</span><span class="p">},</span>
+    <span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span> <span class="p">,</span> <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;count&quot;</span><span class="p">}</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;partitioning&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;app_id&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3 id="viyadb-nodes">ViyaDB nodes<a class="headerlink" href="#viyadb-nodes" title="Permanent link">&para;</a></h3>
+<p>Then, let's launch four AWS EC2 instances of type r4.2xlarge. This instance type has 8 vCPU, which 
+will allow us to have 8 workers per host (32 workers in total). This will translate into having
+32 partitions if using a single replica per partition.</p>
+<p>ViyaDB is built against g++-7, that's why it's easier to use one of Ubuntu Artful (17.10) AMI
+provided by Canonical. Make sure, all TCP ports of ViyaDB nodes are open to each other.
+Also, make sure there’s enough disk space for downloading and extracting several tens
+of gigabytes of JSON files representing user events.</p>
+<p>Once all four machines are running, proceed with the following steps on every one of the nodes.</p>
+<p>Install g++-7 by running the following commands:</p>
+<div class="codehilite"><pre><span></span>apt-get update
+apt-get install g++-7
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 <span class="m">60</span> --slave /usr/bin/g++ g++ /usr/bin/g++-7
+</pre></div>
+
+
+<p>Create file <code>/etc/viyadb/store.json</code> with the following contents (replace <code>consul-host</code> with real Consul hostname):</p>
+<div class="codehilite"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;supervise&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;workers&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  <span class="nt">&quot;cluster_id&quot;</span><span class="p">:</span> <span class="s2">&quot;cluster001&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;consul_url&quot;</span><span class="p">:</span> <span class="s2">&quot;http://consul-host:8500&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;state_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/var/lib/viyadb&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Download ViyaDB package, and extract it:</p>
+<div class="codehilite"><pre><span></span>curl -sS -L https://github.com/viyadb/viyadb/releases/download/v1.0.0-beta/viyadb-1.0.0-beta-linux-x86_64.tgz <span class="p">|</span> tar -zxf -
+</pre></div>
+
+
+<p>Run ViyaDB instance:</p>
+<div class="codehilite"><pre><span></span><span class="nb">cd</span> /opt/viyadb-1.0.0-beta-linux-x86_64
+./bin/viyadb /etc/viyadb/store.json
+</pre></div>
+
+
+<h3 id="loading-data">Loading data<a class="headerlink" href="#loading-data" title="Permanent link">&para;</a></h3>
+<p>There's utility under <code>bin/</code> directory of ViyaDB package called <code>vsql</code>, which can be used for sending SQL queries to ViyaDB cluster.</p>
+<p>Open the SQL shell utility, and connect it to one of ViyaDB hosts:</p>
+<div class="codehilite"><pre><span></span>/opt/viyadb-1.0.0-beta-linux-x86_64/bin/vsql viyadb-host <span class="m">5555</span>
+</pre></div>
+
+
+<p>We have 1 billion of user events stored in gzipped TSV format in AWS S3. To load them, issue the following query:</p>
+<div class="codehilite"><pre><span></span><span class="n">ViyaDB</span><span class="o">&gt;</span> <span class="k">COPY</span> <span class="n">events</span> <span class="p">(</span><span class="n">app_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">country</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">device_type</span><span class="p">,</span> <span class="n">device_vendor</span><span class="p">,</span> <span class="n">ad_network</span><span class="p">,</span> <span class="n">campaign</span><span class="p">,</span> <span class="n">site_id</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">event_name</span><span class="p">,</span> <span class="n">organic</span><span class="p">,</span> <span class="n">days_from_install</span><span class="p">,</span> <span class="n">revenue</span><span class="p">,</span> <span class="k">count</span><span class="p">)</span> <span class="k">FROM</span> <span class="s1">&#39;s3://viyadb-test/events/input/&#39;</span>
+</pre></div>
+
+
+<h3 id="querying">Querying<a class="headerlink" href="#querying" title="Permanent link">&para;</a></h3>
+<p>Disclaimer: all queries were recorded when running for the second time to exclude query compilation time from the total query running time.</p>
+<p>Count different event types for a given list of applications:</p>
+<div class="codehilite"><pre><span></span><span class="n">ViyaDB</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">event_type</span><span class="p">,</span><span class="k">count</span> <span class="k">FROM</span> <span class="n">events</span> <span class="k">WHERE</span> <span class="n">app_id</span> <span class="k">IN</span> <span class="p">(</span><span class="s1">&#39;com.skype.raider&#39;</span><span class="p">,</span> <span class="s1">&#39;com.adobe.psmobile&#39;</span><span class="p">,</span> <span class="s1">&#39;com.dropbox.android&#39;</span><span class="p">,</span> <span class="s1">&#39;com.ego360.flatstomach&#39;</span><span class="p">)</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">event_type</span> <span class="k">DESC</span>
+
+<span class="n">event_type</span>  <span class="k">count</span>
+<span class="c1">----------  -----</span>
+<span class="k">session</span>     <span class="mi">117927202</span>
+<span class="n">install</span>     <span class="mi">263444</span>
+<span class="n">inappevent</span>  <span class="mi">200466796</span>
+<span class="n">impression</span>  <span class="mi">58431</span>
+<span class="n">click</span>       <span class="mi">297</span>
+
+<span class="n">Time</span> <span class="n">taken</span><span class="p">:</span> <span class="mi">0</span><span class="p">.</span><span class="mi">530</span> <span class="n">secs</span>
+</pre></div>
+
+
+<p>Find 5 top cities in USA by install count for a specific application:</p>
+<div class="codehilite"><pre><span></span><span class="n">ViyaDB</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">city</span><span class="p">,</span><span class="k">count</span> <span class="k">FROM</span> <span class="n">events</span> <span class="k">WHERE</span> <span class="n">app_id</span><span class="o">=</span><span class="s1">&#39;com.dropbox.android&#39;</span> <span class="k">AND</span> <span class="n">country</span><span class="o">=</span><span class="s1">&#39;US&#39;</span> <span class="k">AND</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;install&#39;</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span> <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">5</span><span class="p">;</span>
+
+<span class="n">city</span>           <span class="k">count</span>
+<span class="c1">----           -----</span>
+<span class="n">Clinton</span>        <span class="mi">28</span>
+<span class="n">Farmington</span>     <span class="mi">20</span>
+<span class="n">Madison</span>        <span class="mi">18</span>
+<span class="n">Oxford</span>         <span class="mi">18</span>
+<span class="n">Highland</span> <span class="n">Park</span>  <span class="mi">18</span>
+
+<span class="n">Time</span> <span class="n">taken</span><span class="p">:</span> <span class="mi">0</span><span class="p">.</span><span class="mi">171</span> <span class="n">secs</span>
+</pre></div>
+
+
+<p>Find top 10 ad networks for a specific application:</p>
+<div class="codehilite"><pre><span></span><span class="n">ViyaDB</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">ad_network</span><span class="p">,</span> <span class="k">count</span> <span class="k">FROM</span> <span class="n">events</span> <span class="k">WHERE</span> <span class="n">app_id</span><span class="o">=</span><span class="s1">&#39;kik.android&#39;</span> <span class="k">AND</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;install&#39;</span> <span class="k">AND</span> <span class="n">ad_network</span> <span class="o">&lt;&gt;</span> <span class="s1">&#39;&#39;</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="k">count</span> <span class="k">DESC</span> <span class="k">LIMIT</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="n">ad_network</span>    <span class="k">count</span>
+<span class="c1">----------    -----</span>
+<span class="n">Twitter</span>       <span class="mi">1257</span>
+<span class="n">Facebook</span>      <span class="mi">1089</span>
+<span class="n">Google</span>        <span class="mi">904</span>
+<span class="n">jiva_network</span>  <span class="mi">96</span>
+<span class="n">yieldlove</span>     <span class="mi">79</span>
+<span class="n">i</span><span class="o">-</span><span class="n">movad</span>       <span class="mi">66</span>
+<span class="n">barons_media</span>  <span class="mi">57</span>
+<span class="n">cpmob</span>         <span class="mi">50</span>
+<span class="n">branovate</span>     <span class="mi">35</span>
+<span class="n">somimedia</span>     <span class="mi">34</span>
+
+<span class="n">Time</span> <span class="n">taken</span><span class="p">:</span> <span class="mi">0</span><span class="p">.</span><span class="mi">089</span> <span class="n">secs</span>
+</pre></div>
+
+
+<p>Find user retention (number of distinct user sessions) for the first week, per three major ad networks:</p>
+<div class="codehilite"><pre><span></span><span class="n">ViyaDB</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="n">ad_network</span><span class="p">,</span> <span class="n">days_from_install</span><span class="p">,</span> <span class="n">users</span> <span class="k">FROM</span> <span class="n">events</span> <span class="k">WHERE</span> <span class="n">app_id</span><span class="o">=</span><span class="s1">&#39;kik.android&#39;</span> <span class="k">AND</span> <span class="n">event_time</span> <span class="k">BETWEEN</span> <span class="s1">&#39;2015-01-01&#39;</span> <span class="k">AND</span> <span class="s1">&#39;2015-01-31&#39;</span> <span class="k">AND</span> <span class="n">event_type</span><span class="o">=</span><span class="s1">&#39;session&#39;</span> <span class="k">AND</span> <span class="n">ad_network</span> <span class="k">IN</span><span class="p">(</span><span class="s1">&#39;Facebook&#39;</span><span class="p">,</span> <span class="s1">&#39;Google&#39;</span><span class="p">,</span> <span class="s1">&#39;Twitter&#39;</span><span class="p">)</span> <span class="k">AND</span> <span class="n">days_from_install</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">days_from_install</span><span class="p">,</span> <span class="n">users</span> <span class="k">DESC</span>
+
+<span class="n">ad_network</span>  <span class="n">days_from_install</span>  <span class="n">users</span>
+<span class="c1">----------  -----------------  -----</span>
+<span class="n">Twitter</span>     <span class="mi">0</span>                  <span class="mi">33</span>
+<span class="n">Google</span>      <span class="mi">0</span>                  <span class="mi">20</span>
+<span class="n">Facebook</span>    <span class="mi">0</span>                  <span class="mi">14</span>
+<span class="n">Twitter</span>     <span class="mi">1</span>                  <span class="mi">31</span>
+<span class="n">Google</span>      <span class="mi">1</span>                  <span class="mi">18</span>
+<span class="n">Facebook</span>    <span class="mi">1</span>                  <span class="mi">13</span>
+<span class="n">Twitter</span>     <span class="mi">2</span>                  <span class="mi">30</span>
+<span class="n">Google</span>      <span class="mi">2</span>                  <span class="mi">17</span>
+<span class="n">Facebook</span>    <span class="mi">2</span>                  <span class="mi">12</span>
+<span class="n">Twitter</span>     <span class="mi">3</span>                  <span class="mi">29</span>
+<span class="n">Google</span>      <span class="mi">3</span>                  <span class="mi">14</span>
+<span class="n">Facebook</span>    <span class="mi">3</span>                  <span class="mi">11</span>
+<span class="n">Twitter</span>     <span class="mi">4</span>                  <span class="mi">27</span>
+<span class="n">Google</span>      <span class="mi">4</span>                  <span class="mi">13</span>
+<span class="n">Facebook</span>    <span class="mi">4</span>                  <span class="mi">10</span>
+<span class="n">Twitter</span>     <span class="mi">5</span>                  <span class="mi">26</span>
+<span class="n">Google</span>      <span class="mi">5</span>                  <span class="mi">13</span>
+<span class="n">Facebook</span>    <span class="mi">5</span>                  <span class="mi">10</span>
+<span class="n">Twitter</span>     <span class="mi">6</span>                  <span class="mi">23</span>
+<span class="n">Google</span>      <span class="mi">6</span>                  <span class="mi">12</span>
+<span class="n">Facebook</span>    <span class="mi">6</span>                  <span class="mi">9</span>
+<span class="n">Twitter</span>     <span class="mi">7</span>                  <span class="mi">22</span>
+<span class="n">Google</span>      <span class="mi">7</span>                  <span class="mi">12</span>
+<span class="n">Facebook</span>    <span class="mi">7</span>                  <span class="mi">9</span>
+
+<span class="n">Time</span> <span class="n">taken</span><span class="p">:</span> <span class="mi">0</span><span class="p">.</span><span class="mi">033</span> <span class="n">secs</span>
+</pre></div>
+
+
 <h2 id="real-time-data-processing">Real-Time Data Processing<a class="headerlink" href="#real-time-data-processing" title="Permanent link">&para;</a></h2>
 <p>To see the complete real-time data processing architecture based on ViyaDB cluster, please
 visit <a href="../realtime/">next</a> section.</p>
