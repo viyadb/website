@@ -1,7 +1,7 @@
-base_url: https://viyadb.com
 site_name: ViyaDB
 site_description: In-Memory Analytical Database
 site_favicon: 'img/favicon.png'
+site_url: 'https://viyadb.com'
 repo_name: 'viyadb/viyadb'
 repo_url: 'https://github.com/viyadb/viyadb'
 google_analytics:
@@ -36,3 +36,5 @@ markdown_extensions:
   - admonition
 extra_css:
   - 'css/extra.css'
+extra_javascript:
+  - 'js/extra.js'
