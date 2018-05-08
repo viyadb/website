@@ -1,5 +1,5 @@
-Clustering
-===========
+Setting Up a Cluster
+=====================
 
 Even though it's possible to run ViyaDB on a single node, it's usually required
 to run several database instances in order to be able to:

@@ -9,10 +9,10 @@ google_analytics:
   - 'auto'
 pages:
   - Overview: index.md
-  - usage.md
-  - samples.md
-  - clustering.md
-  - realtime.md
+  - Core Usage: usage.md
+  - Setting Up a Cluster: clustering.md
+  - Real-time Analytics: realtime.md
+  - Examples: samples.md
 extra:
   logo: 'img/logo.svg'
   social:

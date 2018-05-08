@@ -1,12 +1,15 @@
 Real-Time Architecture
 =======================
 
+This section describes how ViyaDB can be leveraged for building a real-time analytics pipeline,
+capable of processing millions of events in a second.
+
 ViyaDB implements shared nothing architecture, which means that workers hold partitions
 of data independently from each other. This allows for many possible implementations of
 real-time analytics architecture depending on business requirements and/or restrictions
 you might have.
 
-Below is one of possible implementations of real-time ViyaDB environment.
+Below is one of possible implementations of real-time analytics pipeline based on ViyaDB.
 
 ## Diagram
 

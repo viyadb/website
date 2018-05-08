@@ -349,6 +349,7 @@ Supported query types are:
 
  * Aggregate
  * Search
+ * Select
 
 To query, a query request must be submitted using POST method:
 
@@ -524,6 +525,38 @@ You can ask to sort output results by set of columns, and specify sort order on 
 
 `ascending` parameter can be ommitted, in this case the sort order will be descending. 
 
+#### SQL Syntax
+
+SQL syntax for querying aggregations looks similar to standard SQL query with only distinction that there's no need
+to specify `GROUP BY` clause, because all metrics are pre-aggregated already:
+
+```sql
+SELECT <dimension1>, ... <metric1>, ...
+FROM <table>
+[WHERE <condition>]
+[HAVING <condition>]
+[ORDER BY <column1> [ASC|DESC], ...]
+[LIMIT <number>, <number> | LIMIT <number> OFFSET <number>]
+```
+
+For example, the following query finds all event types number for two mobile applications
+for period of 2017 January, where total number of a single event type is greater than 100:
+
+```sql
+SELECT
+  event_type, count
+FROM
+  events
+WHERE
+  app_id IN ('com.skype.raider', 'com.dropbox.android') AND
+  install_time BETWEEN '2017-01-01' AND '2017-01-31'
+HAVING
+  count > 100
+ORDER BY
+  event_type DESC
+```
+
+
 ### Search Query
 
 This query type retrieves dimension values by a given set of filters. This feature can come in handy when implementing a field values type assist, when developing an analytics user interface filter.
@@ -539,6 +572,65 @@ The basic format is the following:
   "limit": 0,
   "filter":  ...
 }
+```
+
+#### SQL Syntax
+
+SQL syntax for the Search Query is:
+
+```sql
+SELECT SEARCH(<dimension>, <term>)
+FROM <table>
+[WHERE <condition>]
+[LIMIT <number>, <number> | LIMIT <number> OFFSET <number>]
+```
+
+For example, the following query looks up for all event name types starting from `order_`,
+where revenue of a single event is greater than $1:
+
+```sql
+SELECT
+  SEARCH(event_name, 'order_')
+FROM
+  events
+WHERE
+  revenue > 1.0
+LIMIT 10
+```
+
+### Select Query
+
+This query is useful for viewing raw data as it's stored in ViyaDB without the post-aggregation step.
+Please note that there is a pre-aggregation step during data ingestion, which cannot be reverted.
+
+To run the query use the following syntax, which is similar to the Aggregate Query syntax:
+
+```json
+{
+  "type": "aggregate",
+  "table": "<table name>",
+  "select": [ ... ],
+  "filter":  ... ,
+  "skip": 0,
+  "limit": 0
+}
+```
+
+#### SQL Syntax
+
+SQL syntax for the Select Query is:
+
+```sql
+SELECT RAW(<dimension1>, ... <metric1>, ...)
+FROM <table>
+[WHERE <condition>]
+[LIMIT <number>, <number> | LIMIT <number> OFFSET <number>]
+```
+
+For example, the following query returns first 100 pre-aggregated rows stored in ViyaDB table `events`:
+
+```sql
+SELECT RAW('*') FROM events LIMIT 100
 ```
 
 ### Metadata Queries
@@ -561,5 +653,4 @@ use the following query:
 ```bash
 curl http://<viyadb-host>:<viyadb-port>/tables/<table name>/meta
 ```
-
 
