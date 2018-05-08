@@ -20,7 +20,7 @@
     
     
       
-        <title>Realtime - ViyaDB</title>
+        <title>Real-time Analytics - ViyaDB</title>
       
     
     
@@ -86,7 +86,7 @@
             
               
             
-            Realtime
+            Real-time Analytics
           
         </span>
       </div>
@@ -209,8 +209,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../usage/" title="Usage" class="md-nav__link">
-      Usage
+    <a href="../usage/" title="Core Usage" class="md-nav__link">
+      Core Usage
     </a>
   </li>
 
@@ -221,20 +221,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../samples/" title="Samples" class="md-nav__link">
-      Samples
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../clustering/" title="Clustering" class="md-nav__link">
-      Clustering
+    <a href="../clustering/" title="Setting Up a Cluster" class="md-nav__link">
+      Setting Up a Cluster
     </a>
   </li>
 
@@ -254,11 +242,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        Realtime
+        Real-time Analytics
       </label>
     
-    <a href="./" title="Realtime" class="md-nav__link md-nav__link--active">
-      Realtime
+    <a href="./" title="Real-time Analytics" class="md-nav__link md-nav__link--active">
+      Real-time Analytics
     </a>
     
       
@@ -434,6 +422,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../samples/" title="Examples" class="md-nav__link">
+      Examples
+    </a>
   </li>
 
     
@@ -630,11 +630,13 @@
                 
                 
                 <h1 id="real-time-architecture">Real-Time Architecture<a class="headerlink" href="#real-time-architecture" title="Permanent link">&para;</a></h1>
+<p>This section describes how ViyaDB can be leveraged for building a real-time analytics pipeline,
+capable of processing millions of events in a second.</p>
 <p>ViyaDB implements shared nothing architecture, which means that workers hold partitions
 of data independently from each other. This allows for many possible implementations of
 real-time analytics architecture depending on business requirements and/or restrictions
 you might have.</p>
-<p>Below is one of possible implementations of real-time ViyaDB environment.</p>
+<p>Below is one of possible implementations of real-time analytics pipeline based on ViyaDB.</p>
 <h2 id="diagram">Diagram<a class="headerlink" href="#diagram" title="Permanent link">&para;</a></h2>
 <p><img alt="Real-Time Architecture Example" src="../img/realtime1.png" /></p>
 <h2 id="components">Components<a class="headerlink" href="#components" title="Permanent link">&para;</a></h2>
@@ -927,7 +929,7 @@ but we're working on it.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../clustering/" title="Clustering" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../clustering/" title="Setting Up a Cluster" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -936,11 +938,25 @@ but we're working on it.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Clustering
+                Setting Up a Cluster
               </span>
             </div>
           </a>
         
+        
+          <a href="../samples/" title="Examples" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Examples
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
         
       </nav>
     </div>

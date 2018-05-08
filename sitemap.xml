@@ -4,7 +4,7 @@
     
     <url>
      <loc>https://viyadb.com/</loc>
-     <lastmod>2018-03-19</lastmod>
+     <lastmod>2018-05-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,15 +12,7 @@
     
     <url>
      <loc>https://viyadb.com/usage/</loc>
-     <lastmod>2018-03-19</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>https://viyadb.com/samples/</loc>
-     <lastmod>2018-03-19</lastmod>
+     <lastmod>2018-05-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +20,7 @@
     
     <url>
      <loc>https://viyadb.com/clustering/</loc>
-     <lastmod>2018-03-19</lastmod>
+     <lastmod>2018-05-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +28,15 @@
     
     <url>
      <loc>https://viyadb.com/realtime/</loc>
-     <lastmod>2018-03-19</lastmod>
+     <lastmod>2018-05-08</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>https://viyadb.com/samples/</loc>
+     <lastmod>2018-05-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
