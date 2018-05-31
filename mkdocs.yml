@@ -1,9 +1,9 @@
 site_name: ViyaDB
 site_description: In-Memory Analytical Database
-site_favicon: 'img/favicon.png'
 site_url: 'https://viyadb.com'
 repo_name: 'viyadb/viyadb'
 repo_url: 'https://github.com/viyadb/viyadb'
+edit_uri: ''
 google_analytics:
   - 'UA-23508932-8'
   - 'auto'
@@ -13,8 +13,13 @@ pages:
   - Setting Up a Cluster: clustering.md
   - Real-time Analytics: realtime.md
   - Examples: samples.md
-extra:
+theme:
+  name: 'material'
   logo: 'img/logo.svg'
+  favicon: 'img/favicon.png'
+  palette:
+    primary: 'blue grey'
+    accent: 'cyan'
   social:
     - type: 'github'
       link: 'https://github.com/viyadb'
@@ -26,10 +31,6 @@ extra:
       link: 'https://groups.google.com/forum/#!forum/viyadb'
     - type: 'envelope'
       link: 'mailto:michael@viyadb.com'
-  palette:
-    primary: 'blue grey'
-    accent: 'cyan'
-theme: 'material'
 markdown_extensions:
   - codehilite
   - toc(permalink=true)
