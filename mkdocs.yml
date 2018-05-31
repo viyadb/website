@@ -13,13 +13,7 @@ pages:
   - Setting Up a Cluster: clustering.md
   - Real-time Analytics: realtime.md
   - Examples: samples.md
-theme:
-  name: 'material'
-  logo: 'img/logo.svg'
-  favicon: 'img/favicon.png'
-  palette:
-    primary: 'blue grey'
-    accent: 'cyan'
+extra:
   social:
     - type: 'github'
       link: 'https://github.com/viyadb'
@@ -31,6 +25,13 @@ theme:
       link: 'https://groups.google.com/forum/#!forum/viyadb'
     - type: 'envelope'
       link: 'mailto:michael@viyadb.com'
+theme:
+  name: 'material'
+  logo: 'img/logo.svg'
+  favicon: 'img/favicon.png'
+  palette:
+    primary: 'blue grey'
+    accent: 'cyan'
 markdown_extensions:
   - codehilite
   - toc(permalink=true)
